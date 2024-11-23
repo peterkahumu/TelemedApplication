@@ -19,7 +19,7 @@ const confirm_password_error = document.querySelector('.confirm-password-feedbac
 const role_error = document.querySelector('.role-feedback');
 
 first_name.addEventListener('keyup', (event)=>{
-    const name_val = event.target.value;
+    const name_val = event.target.value.trim();
 
     if (name_val.length > 0) {
         fetch('/authenticate/validate_name', {
@@ -42,6 +42,37 @@ first_name.addEventListener('keyup', (event)=>{
                 submitButton.disabled = true;                
             } else {
                 first_name_error.style.display = "none";
+                submitButton.removeAttribute('disabled');
+                submitButton.disabled = false;
+            }
+        })
+    }
+})
+
+last_name.addEventListener('keyup', (event)=>{
+    const name_val = event.target.value.trim();
+
+    if (name_val.length > 0) {
+        fetch('/authenticate/validate_name', {
+            body: JSON.stringify({name: name_val}),
+            method: 'POST',
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.name_error) {
+                // username.classList.add("is-invalid");
+                // feedbackField.style.display = "block";
+                // feedbackField.textContent = data.username_error;
+                // usernameSuccess.style.display = "none";
+                // submitButton.setAttribute('disabled', 'disabled')
+                // submitButton.disabled = true;
+
+                last_name_error.style.display = "block";
+                last_name_error.textContent = data.name_error;
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.disabled = true;                
+            } else {
+                last_name_error.style.display = "none";
                 submitButton.removeAttribute('disabled');
                 submitButton.disabled = false;
             }

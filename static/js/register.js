@@ -18,6 +18,7 @@ const password_error = document.querySelector('.password-feedback');
 const confirm_password_error = document.querySelector('.confirm-password-feedback');
 const role_error = document.querySelector('.role-feedback');
 
+// Validate username from the backend
 first_name.addEventListener('keyup', (event)=>{
     const name_val = event.target.value.trim();
 
@@ -29,12 +30,6 @@ first_name.addEventListener('keyup', (event)=>{
         .then((res) => res.json())
         .then((data) => {
             if (data.name_error) {
-                // username.classList.add("is-invalid");
-                // feedbackField.style.display = "block";
-                // feedbackField.textContent = data.username_error;
-                // usernameSuccess.style.display = "none";
-                // submitButton.setAttribute('disabled', 'disabled')
-                // submitButton.disabled = true;
 
                 first_name_error.style.display = "block";
                 first_name_error.textContent = data.name_error;
@@ -49,6 +44,7 @@ first_name.addEventListener('keyup', (event)=>{
     }
 })
 
+// validate last name from the backend
 last_name.addEventListener('keyup', (event)=>{
     const name_val = event.target.value.trim();
 
@@ -60,12 +56,6 @@ last_name.addEventListener('keyup', (event)=>{
         .then((res) => res.json())
         .then((data) => {
             if (data.name_error) {
-                // username.classList.add("is-invalid");
-                // feedbackField.style.display = "block";
-                // feedbackField.textContent = data.username_error;
-                // usernameSuccess.style.display = "none";
-                // submitButton.setAttribute('disabled', 'disabled')
-                // submitButton.disabled = true;
 
                 last_name_error.style.display = "block";
                 last_name_error.textContent = data.name_error;
@@ -73,6 +63,60 @@ last_name.addEventListener('keyup', (event)=>{
                 submitButton.disabled = true;                
             } else {
                 last_name_error.style.display = "none";
+                submitButton.removeAttribute('disabled');
+                submitButton.disabled = false;
+            }
+        })
+    }
+})
+
+// validate username from the backend
+username.addEventListener('keyup', (event) => {
+    const username_val = event.target.value.trim();
+
+    if (username_val.length > 0) {
+        fetch('/authenticate/validate_username', {
+            body: JSON.stringify({username: username_val}),
+            method: 'POST',
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.username_error) {
+
+                username_error.style.display = "block";
+                username_error.textContent = data.username_error;
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.disabled = true;
+            } else {
+
+                username_error.style.display = "None";
+                submitButton.removeAttribute('disabled');
+                submitButton.disabled = false;
+            }
+        })
+    }
+})
+
+// validate email from the backend
+email.addEventListener('keyup', (event) => {
+    const email_val = event.target.value.trim();
+
+    if (email_val.length > 0) {
+        fetch('/authenticate/validate_email', {
+            body: JSON.stringify({email: email_val}),
+            method: 'POST',
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.email_error) {
+
+                email_error.style.display = "block";
+                email_error.textContent = data.email_error;
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.disabled = true;
+            } else {
+
+                email_error.style.display = "None";
                 submitButton.removeAttribute('disabled');
                 submitButton.disabled = false;
             }

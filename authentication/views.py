@@ -17,19 +17,33 @@ class Login(View):
 
 class Register(View):
     def get(self, request):
+
         return render(request, 'authentication/register.html')
     
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
+        confirm_password = request.POST['confirm-password']
         email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
+        first_name = request.POST['first-name']
+        last_name = request.POST['last-name']
         role = request.POST['role']
 
-        user = User.objects.create_user(username = username, first_name = first_name, last_name = last_name, role = role)
-        user.set_password(password)
-        user.save()
+        context = {
+            'field_values': {
+                'username': username,
+                'email': email,
+                'first_name': first_name,
+                'last_name': last_name,
+            },
+            'selected_role': role
+        }
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return render(request, 'authentication/register.html', context)
+           
+
         
         messages.success(request, 'Account created successfully')
         return redirect('authenticated')
@@ -72,3 +86,4 @@ class ValidateEmail(View):
             return JsonResponse({'email_error': 'Email is invalid. Please enter a valid email.'}, status=400)
         
         return JsonResponse({'email_valid': True})
+

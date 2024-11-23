@@ -17,20 +17,20 @@ body {
 }
 
 .nav-bar {
-    position: absolute; 
+    position: absolute;
     top: 0;
     right: 0;
     left: 0;
-    padding: 10px 20px; 
-    background-color: aquamarine; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
-    z-index: 1000; 
+    padding: 10px 20px;
+    background-color: aquamarine;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .nav {
     display: flex;
-    justify-content: flex-end; 
-    width: 100%; 
+    justify-content: flex-end;
+    width: 100%;
 }
 
 nav ul {
@@ -44,8 +44,8 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #333; 
-    font-weight: 500; 
+    color: #333;
+    font-weight: 500;
     transition: color 0.3s;
 }
 
@@ -56,10 +56,12 @@ nav ul li a:hover {
 .container {
     max-width: 800px;
     background: #fff;
-    margin: 100px auto 20px; /* Add margin for spacing */
+    margin: 100px auto 20px;
+    /* Add margin for spacing */
     padding: 25px 40px 10px 40px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
+    /* Rounded corners */
 }
 
 .container .text {
@@ -69,13 +71,16 @@ nav ul li a:hover {
     background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 20px; /* Space below title */
+    margin-bottom: 20px;
+    /* Space below title */
 }
 
 .container img {
     width: 100%;
-    border-radius: 8px; /* Rounded corners for images */
-    margin-bottom: 20px; /* Space below images */
+    border-radius: 8px;
+    /* Rounded corners for images */
+    margin-bottom: 20px;
+    /* Space below images */
 }
 
 .container form {
@@ -112,10 +117,11 @@ nav ul li a:hover {
     font-size: 17px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.12);
 }
-.input-data input:focus ~ label,
-.textarea textarea:focus ~ label,
-.input-data input:valid ~ label,
-.textarea textarea:valid ~ label {
+
+.input-data input:focus~label,
+.textarea textarea:focus~label,
+.input-data input:valid~label,
+.textarea textarea:valid~label {
     transform: translateY(-20px);
     font-size: 14px;
     color: #3498db;
@@ -152,17 +158,17 @@ nav ul li a:hover {
     transition: transform 0.3s ease;
 }
 
-.input-data input:focus ~ .underline:before,
-.input-data input:valid ~ .underline:before,
-.textarea textarea:focus ~ .underline:before,
-.textarea textarea:valid ~ .underline:before {
+.input-data input:focus~.underline:before,
+.input-data input:valid~.underline:before,
+.textarea textarea:focus~.underline:before,
+.textarea textarea:valid~.underline:before {
     transform: scale(1);
 }
 
 .submit-btn .input-data {
     overflow: hidden;
-    height: 45px!important;
-    width: 25%!important;
+    height: 45px !important;
+    width: 25% !important;
 }
 
 .submit-btn .input-data .inner {
@@ -205,11 +211,11 @@ nav ul li a:hover {
     }
 
     form .form-row .input-data {
-        margin: 35px 0!important;
+        margin: 35px 0 !important;
     }
 
     .submit-btn .input-data {
-        width: 40%!important;
+        width: 40% !important;
     }
 
     .nav {
@@ -261,24 +267,44 @@ nav ul li a:hover {
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     opacity: 0;
     transform: translateY(20px);
     animation: slideIn 0.5s forwards;
 }
 
-.testimonial:nth-child(1) { animation-delay: 0.3s; }
-.testimonial:nth-child(2) { animation-delay: 0.6s; }
-.testimonial:nth-child(3) { animation-delay: 0.9s; }
+.testimonial:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.testimonial:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.testimonial:nth-child(3) {
+    animation-delay: 0.9s;
+}
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .call-to-action {
@@ -315,27 +341,31 @@ p {
     margin-bottom: 20px;
 }
 
-.course-list, .project-list {
+.course-list,
+.project-list {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.course-item, .project-item {
+.course-item,
+.project-item {
     background: #f9f9f9;
     border-radius: 8px;
     padding: 20px;
     width: 250px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
 }
 
-.course-item:hover, .project-item:hover {
+.course-item:hover,
+.project-item:hover {
     transform: translateY(-5px);
 }
 
-.admissions, .services {
+.admissions,
+.services {
     background: #56d8e4;
     color: white;
     padding: 40px 20px;
@@ -345,16 +375,21 @@ p {
 
 /* Responsive styles */
 @media (max-width: 700px) {
-    .course-list, .project-list {
+
+    .course-list,
+    .project-list {
         flex-direction: column;
         align-items: center;
     }
-    
-    .course-item, .project-item {
-        width: 90%; /* Full width on mobile */
+
+    .course-item,
+    .project-item {
+        width: 90%;
+        /* Full width on mobile */
     }
 
-    .admissions, .services {
+    .admissions,
+    .services {
         padding: 30px 10px;
     }
 }
@@ -362,22 +397,26 @@ p {
 /* Add these styles to your existing CSS */
 
 .nav-bar {
-    position: absolute; 
+    position: absolute;
     top: 0;
     right: 0;
     left: 0;
-    padding: 10px 20px; 
-    background-color: aquamarine; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
-    z-index: 1000; 
+    padding: 10px 20px;
+    background-color: aquamarine;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Change to space-between */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between;
+    /* Change to space-between */
+    align-items: center;
+    /* Center items vertically */
 }
 
 .menu-toggle {
-    display: none; /* Hidden by default */
-    cursor: pointer; /* Pointer on hover */
+    display: none;
+    /* Hidden by default */
+    cursor: pointer;
+    /* Pointer on hover */
 }
 
 .nav-list {
@@ -386,26 +425,33 @@ p {
 }
 
 .nav-list.active {
-    display: flex; /* Show the menu when active */
-    flex-direction: column; /* Stack items vertically */
+    display: flex;
+    /* Show the menu when active */
+    flex-direction: column;
+    /* Stack items vertically */
 }
 
 @media (max-width: 700px) {
     .menu-toggle {
-        display: block; 
+        display: block;
     }
 
     .nav-list {
-        display: none; 
-        width: 100%; 
-        background-color: aquamarine; /* Match nav background */
-        position: absolute; /* Positioning to cover the screen */
-        top: 60px; /* Below the navbar */
-        left: 0; /* Align to the left */
+        display: none;
+        width: 100%;
+        background-color: aquamarine;
+        /* Match nav background */
+        position: absolute;
+        /* Positioning to cover the screen */
+        top: 60px;
+        /* Below the navbar */
+        left: 0;
+        /* Align to the left */
     }
 
     .nav-list li {
-        margin: 10px 0; /* Space between items */
+        margin: 10px 0;
+        /* Space between items */
     }
 }
 
@@ -418,7 +464,7 @@ p {
     color: white;
     text-decoration: none;
     border-radius: 5px;
-   
+
 }
 
 .course-item img,
@@ -486,7 +532,8 @@ p {
     color: #007BFF;
 }
 
-.about-content p, .about-content ul {
+.about-content p,
+.about-content ul {
     font-size: 1.1em;
     line-height: 1.6;
 }
@@ -498,4 +545,34 @@ p {
 
 .about-content li {
     margin: 10px 0;
+}
+
+
+.messages {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.show {
+    opacity: 1;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
 }

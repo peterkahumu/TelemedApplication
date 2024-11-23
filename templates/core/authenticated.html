@@ -11,6 +11,8 @@
     {% include 'partials/_messages.html' %}
     <h1>You have just been authenticated into the program.
     </h1>
+    <h1>{{request.user.username}}  {{request.user.id}}</h1>
+    
 </body>
 
 </html>

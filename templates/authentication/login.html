@@ -1,24 +1,17 @@
+{% extends 'base_auth.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-
-<body>
+{% block title %}Login{% endblock %}
+{% block content %}
     <div class="form-container">
         <div class="text">
             Login
         </div>
-        <form action="" onsubmit="return false">
-
+        <form method = 'post' name="login-form" id="login-form">
+            {% csrf_token %}
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="username" id="username" required>
+                    <input type="text" name="username" id="username" value = "{{username}}" required>
                     <div class="underline"></div>
                     <label for="username">Username</label>
                     <span class="error-message" id="username-error"></span>
@@ -43,8 +36,6 @@
             <span>Already have an account? <a href="{% url 'register' %}">Register Here</a></span>
         </form>
     </div>
-</body>
 
-<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}
 
-</html>

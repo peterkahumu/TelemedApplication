@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from validate_email import validate_email
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 class Login(View):
@@ -13,13 +14,39 @@ class Login(View):
         return render(request, 'authentication/login.html')
     
     def post(self, request):
-        return render(request, 'authentication/authenticated.html')
+        username = request.POST['username']
+        password = request.POST['password']
+
+        context = {
+            'username': username,
+            }
+
+        if not username or not password:
+            messages.error(request, 'All fields are required. Please check and try again.')
+            return render(request, 'authentication/login.html', context)
+        
+        user = authenticate(request, username = username, password = password)
+
+        if user is None:
+            messages.error(request, 'Invalid username or password. Please try again.')
+            return render(request, 'authentication/login.html', context)
+        
+        try:
+            login(request, user)
+            messages.success(request, f'Welcome back, {username}')
+            return redirect('authenticated')
+        except Exception as e:
+            messages.error(request, 'An error occurred while logging in. Please try again.')
+            return render(request, 'authentication/login.html', context)
     
 
 class Register(View):
     def get(self, request):
-
-        return render(request, 'authentication/register.html')
+        context = {
+            'field_values': {}, 
+            'selected_role': '',
+        }
+        return render(request, 'authentication/register.html',  context)
     
     def post(self, request):
         username = request.POST['username']
@@ -63,8 +90,6 @@ class Register(View):
             messages.error(request, 'An error occurred while creating your account. Please try again.')
             return render(request, 'authentication/register.html', context)
         
-        messages.success(request, 'Account created successfully')
-        return redirect('authenticated')
 
 
 class ValidateName(View):
@@ -90,7 +115,7 @@ class ValidateUsername(View):
             return JsonResponse({'username_error': 'Username must contain letters and numbers only'}, status = 400)
         
         if User.objects.filter(username = username).exists():
-            return JsonResponse({'username_error': 'Username already exists. Use another username.'}, status=400)
+            return JsonResponse({'username_error': 'Username taken. Choose another.'}, status=409)
         return JsonResponse({'username_valid': True})
 
 class ValidateEmail(View):
@@ -101,7 +126,7 @@ class ValidateEmail(View):
         if User.objects.filter(email = email).exists():
             return JsonResponse({'email_error': 'Email already exists. Use another email.'}, status=400)
         if not validate_email(email):
-            return JsonResponse({'email_error': 'Email is invalid. Please enter a valid email.'}, status=400)
+            return JsonResponse({'email_error': 'Email is invalid. Please enter a valid email.'}, status=409)
         
         return JsonResponse({'email_valid': True})
 

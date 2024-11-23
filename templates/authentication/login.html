@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="text">
+            Login
+        </div>
+        <form action="" onsubmit="return false">
+
+            <div class="form-row">
+                <div class="input-data">
+                    <input type="text" name="username" id="username" required>
+                    <div class="underline"></div>
+                    <label for="username">Username</label>
+                    <span class="error-message" id="username-error"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-data">
+                    <input type="password" name="password" id="password" required>
+                    <div class="underline"></div>
+                    <label for="password">Password</label>
+                    <span class="error-message" id="password-error"></span>
+                </div>
+            </div>
+
+            <div class="form-row submit-btn">
+                <div class="input-data">
+                    <div class="inner"></div>
+                    <input type="submit" id="submit" value="Login">
+                </div>
+            </div>
+
+            <span>Already have an account? <a href="{% url 'register' %}">Register Here</a></span>
+        </form>
+    </div>
+</body>
+
+<script src="{% static 'js/login.js' %}"></script>
+
+</html>

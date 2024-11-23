@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="text">
+            Register
+        </div>
+        <form method="post" id="register-form" name="register-form">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="input-data">
+                    <input type="text" name="first-name" id="first-name" required>
+                    <div class="underline"></div>
+                    <label for="">First Name</label>
+                    <span class="invalid-feedback first-name-feedback" style="display: none;"></span>
+                </div>
+                <div class="input-data">
+                    <input type="text" name="last-name" id="last-name" required>
+                    <div class="underline"></div>
+                    <label for="">Last Name</label>
+                    <span class="invalid-feedback last-name-feedback" style="display: none;"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-data">
+                    <input type="text" name="username" id="username" required>
+                    <div class="underline"></div>
+                    <label for="username">Username</label>
+                    <span class="invalid-feedback username-feedback" style="display: none;"></span>
+                </div>
+                <div class="input-data">
+                    <input type="email" name="email" id="email" required>
+                    <div class="underline"></div>
+                    <label for="email">Email</label>
+                    <span class="invalid-feedback email-feedback" style="display: none;"></span>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="input-data">
+                    <input type="password" name="password" id="password" required>
+                    <div class="underline"></div>
+                    <label for="password">Password</label>
+                    <span class="invalid-feedback password-feedback" style="display: none;"></span>
+                </div>
+
+                <div class="input-data">
+                    <input type="password" name="confirm-password" id="confirm-password" required>
+                    <div class="underline"></div>
+                    <label for="confirm-password">Confirm Password</label>
+                    <span class="invalid-feedback confirm-password-feedback" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                 <div class="input-data">
+                    <select name="role" id="role">
+                        <option value="">Select Role</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="patient">Patient</option>
+                    </select>
+                    <span class="invalid-feedback role-feedback" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="form-row submit-btn">
+                <div class="input-data">
+                    <div class="inner"></div>
+                    <input type="submit"  id="submit" name="submit">
+                </div>
+            </div>
+
+            <span>Already have an account? <a href="{% url 'login' %}">Login Here</a></span>
+        </form>
+    </div>
+</body>
+
+<script src="{% static 'js/register.js' %}"></script>
+</html>

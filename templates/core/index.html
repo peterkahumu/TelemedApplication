@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="nav">
+        <section id="nav" class="nav-bar">
+            <nav>
+                <div class="menu-toggle" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-list" id="nav-list">
+                    <!-- <li><a href="index.html">Home</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="admissions.html">Admissions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li> -->
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                </ul>
+            </nav>
+        </section>
+    </div>
+
+    <div class="hero">
+        <h1>Welcome to Our School</h1>
+        <p>Empowering students for a brighter future.</p>
+    </div>
+
+    <div class="testimonials">
+        <h2>What Our Students Say</h2>
+        <div class="testimonial">
+            <p>"This school has transformed my life! The teachers are amazing and truly care about our success." - Jane Doe</p>
+        </div>
+        <div class="testimonial">
+            <p>"I love the supportive environment here. It's like a second home!" - John Smith</p>
+        </div>
+        <div class="testimonial">
+            <p>"The programs offered are top-notch. I couldn't have asked for a better education!" - Sarah Lee</p>
+        </div>
+    </div>
+
+    <section class="courses">
+        <h2>Our Courses</h2>
+        <p>We offer a variety of courses to help you achieve your academic goals. From science to arts, there's something for everyone.</p>
+        <div class="course-list">
+            <div class="course-item">
+                <h3>Computer Science</h3>
+                <p>Learn the fundamentals of programming, algorithms, and data structures.</p>
+                <a href="courses.html" class="btn">Read More</a>
+            </div>
+            <div class="course-item">
+                <h3>Business Management</h3>
+                <p>Gain skills in leadership, marketing, and strategic planning.</p>
+                <a href="courses.html" class="btn">Read More</a>
+            </div>
+            <div class="course-item">
+                <h3>Art & Design</h3>
+                <p>Explore your creativity with our comprehensive art programs.</p>
+                <a href="courses.html" class="btn">Read More</a>
+            </div>
+
+           
+        </div>
+    </section>
+
+    <section class="projects">
+        <h2>Student Projects</h2>
+        <p>Our students are engaged in exciting projects that apply their learning in real-world situations.</p>
+        <div class="project-list">
+            <div class="project-item">
+                <h3>Community Service Initiative</h3>
+                <p>A project aimed at improving local communities through volunteer work.</p>
+                <a href="projects.html" class="btn">Read More</a>
+            </div>
+            <div class="project-item">
+                <h3>Tech Innovations</h3>
+                <p>Students create innovative tech solutions for everyday problems.</p>
+                <a href="projects.html" class="btn">Read More</a>
+            </div>
+            <div class="project-item">
+                <h3>Art Exhibitions</h3>
+                <p>Showcasing the creative talents of our art students.</p>
+                <a href="projects.html" class="btn">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="admissions">
+        <h2>Admissions</h2>
+        <p>Join our vibrant community! Find out how to apply and become part of our school.</p>
+        <a href="admissions.html" class="btn">Learn More</a>
+    </section>
+
+    <section class="services">
+        <h2>Our Services</h2>
+        <p>We provide a range of services to support our students, including counseling, tutoring, and extracurricular activities.</p>
+        <a href="services.html" class="btn">Explore Services</a>
+    </section>
+
+    <div class="call-to-action">
+        <h2>Ready to join us?</h2>
+        <a href="{% url 'register' %}">Register Now</a>
+    </div>
+
+   
+</body>
+</html>

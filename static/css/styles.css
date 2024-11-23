@@ -16,6 +16,8 @@ body {
     background: #1a76d1;
 }
 
+
+
 .nav-bar {
     position: absolute;
     top: 0;
@@ -55,8 +57,12 @@ nav ul li a:hover {
 
 .container {
     max-width: 800px;
+}
+
+.form-container {
+    max-width: 800px;
     background: #fff;
-    margin: 100px auto 20px;
+    margin: 20px auto 20px;
     /* Add margin for spacing */
     padding: 25px 40px 10px 40px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -64,7 +70,8 @@ nav ul li a:hover {
     /* Rounded corners */
 }
 
-.container .text {
+
+.form-container .text {
     text-align: center;
     font-size: 41px;
     font-weight: 600;
@@ -75,7 +82,7 @@ nav ul li a:hover {
     /* Space below title */
 }
 
-.container img {
+.form-container img {
     width: 100%;
     border-radius: 8px;
     /* Rounded corners for images */
@@ -83,11 +90,11 @@ nav ul li a:hover {
     /* Space below images */
 }
 
-.container form {
+.form-container form {
     padding: 30px 0 0 0;
 }
 
-.container form .form-row {
+.form-container form .form-row {
     display: flex;
     margin: 32px 0;
 }
@@ -198,15 +205,15 @@ nav ul li a:hover {
 }
 
 @media (max-width: 700px) {
-    .container .text {
+    .form-container .text {
         font-size: 30px;
     }
 
-    .container form {
+    .form-container form {
         padding: 10px 0 0 0;
     }
 
-    .container form .form-row {
+    .form-container form .form-row {
         display: block;
     }
 
@@ -576,3 +583,4 @@ p {
         transform: translateY(-5px);
     }
 }
+

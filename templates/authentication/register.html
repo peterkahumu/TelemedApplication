@@ -6,27 +6,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
 <body>
-    <div class="container">
+    {% include 'partials/_messages.html' %}
+    <div class="form-container">
         <!-- Include messages with their respective colors and tags as classes -->
-         {% include 'partials/_messages.html' %}
         <div class="text">
             Register
         </div>
+
         <form method="post" id="register-form" name="register-form">
             {% csrf_token %}
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="first-name" id="first-name" value = "{{field_values.first_name}}" required>
+                    <input type="text" name="first-name" id="first-name" value="{{field_values.first_name}}" required>
                     <div class="underline"></div>
                     <label for="">First Name</label>
                     <span class="invalid-feedback first-name-feedback" style="display: none;"></span>
                 </div>
                 <div class="input-data">
-                    <input type="text" name="last-name" id="last-name" value = "{{field_values.last_name}}" required>
+                    <input type="text" name="last-name" id="last-name" value="{{field_values.last_name}}" required>
                     <div class="underline"></div>
                     <label for="">Last Name</label>
                     <span class="invalid-feedback last-name-feedback" style="display: none;"></span>
@@ -34,13 +34,13 @@
             </div>
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="username" id="username" value = "{{field_values.username}}" required>
+                    <input type="text" name="username" id="username" value="{{field_values.username}}" required>
                     <div class="underline"></div>
                     <label for="username">Username</label>
                     <span class="invalid-feedback username-feedback" style="display: none;"></span>
                 </div>
                 <div class="input-data">
-                    <input type="email" name="email" id="email" value = "{{field_values.email}}" required>
+                    <input type="email" name="email" id="email" value="{{field_values.email}}" required>
                     <div class="underline"></div>
                     <label for="email">Email</label>
                     <span class="invalid-feedback email-feedback" style="display: none;"></span>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="input-data">
-                    <input type="password" name="confirm-password" id="confirm-password"  required>
+                    <input type="password" name="confirm-password" id="confirm-password" required>
                     <div class="underline"></div>
                     <label for="confirm-password">Confirm Password</label>
                     <span class="invalid-feedback confirm-password-feedback" style="display: none;"></span>
@@ -66,11 +66,11 @@
 
             <div class="form-row">
 
-                 <div class="input-data">
+                <div class="input-data">
                     <select name="role" id="role" required>
                         <option value="">Select Role</option>
-                        <option value="doctor" {% if selected_role == 'doctor' %} selected {%endif%}>Doctor</option>
-                        <option value="patient" {% if selected_role == 'patient' %} selected {%endif%}>Patient</option>
+                        <option value="doctor" {% if selected_role == 'doctor' %} selected {%endif %} >Doctor</option>
+                        <option value="patient" {% if selected_role == 'patient' %} selected {%endif %}>Patient</option>
                     </select>
                     <span class="invalid-feedback role-feedback" style="display: none;"></span>
                 </div>
@@ -79,7 +79,7 @@
             <div class="form-row submit-btn">
                 <div class="input-data">
                     <div class="inner"></div>
-                    <input type="submit"  id="submit" name="submit">
+                    <input type="submit" id="submit" name="submit">
                 </div>
             </div>
 
@@ -89,4 +89,5 @@
 </body>
 
 <script src="{% static 'js/register.js' %}"></script>
+
 </html>

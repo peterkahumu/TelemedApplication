@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.views import View
 from django.contrib import messages
 import json
 from django.http import JsonResponse
 from validate_email import validate_email
+from django.contrib.auth.models import User
+from .models import UserProfile
 
 # Create your views here.
 class Login(View):
@@ -39,11 +40,28 @@ class Register(View):
             'selected_role': role
         }
 
+        if not first_name or not last_name or not username or not email or not password or not confirm_password or not role:
+            messages.error(request, 'All fields are required. Please cross-check and provide the required information.')
+            return render(request, 'authentication/register.html', context)
+
         if password != confirm_password:
             messages.error(request, "Passwords do not match")
             return render(request, 'authentication/register.html', context)
            
+        if len(password) < 6:
+            messages.error(request, 'Password too short. Please use at least 6 characters')
+            return render(request, 'authentication/register.html', context)
+        
+        try:
+            user = User.objects.create_user(username = username, email = email, password = password, first_name = first_name, last_name = last_name)
+            user_profile = UserProfile(user = user, role = role)
+            user_profile.save()
 
+            messages.success(request, f'{username}, your account was created successfully')
+            return redirect ('authenticated')
+        except Exception as e:
+            messages.error(request, 'An error occurred while creating your account. Please try again.')
+            return render(request, 'authentication/register.html', context)
         
         messages.success(request, 'Account created successfully')
         return redirect('authenticated')

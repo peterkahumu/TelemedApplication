@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Authenticated{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    {% include 'partials/_messages.html' %}
+{% block content %}
     <h1>You have just been authenticated into the program.
     </h1>
     <h1>{{request.user.username}}  {{request.user.id}}</h1>
-    
-</body>
-
-</html>
+{% endblock %}  

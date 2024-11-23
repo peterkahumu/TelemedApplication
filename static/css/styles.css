@@ -462,17 +462,6 @@ p {
     }
 }
 
-.btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
-    transition: all 0.4s;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-
-}
 
 .course-item img,
 .project-item img,
@@ -582,5 +571,9 @@ p {
     60% {
         transform: translateY(-5px);
     }
+}
+.mt-3{
+    max-width: fit-content !important;
+    margin: 0 auto;
 }
 

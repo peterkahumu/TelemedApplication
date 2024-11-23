@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from validate_email import validate_email
 from django.contrib.auth.models import User
 from .models import UserProfile
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 class Login(View):
@@ -130,3 +130,12 @@ class ValidateEmail(View):
         
         return JsonResponse({'email_valid': True})
 
+class Logout(View):
+    def post(self, request):
+        try:
+            logout(request)
+            messages.success(request, 'You have been logged out successfully.')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, 'An error occurred while logging out. Please try again.')
+            return redirect('authenticated')

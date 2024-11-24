@@ -1,10 +1,7 @@
-const first_name = document.querySelector('#first-name');
-const last_name = document.querySelector('#last-name');
+const first_name = document.querySelector('#first_name');
+const last_name = document.querySelector('#last_name');
 const username = document.querySelector('#username');
 const email = document.querySelector('#email');
-const password = document.querySelector('#password');
-const confirm_password = document.querySelector('#confirm-password');
-const role = document.querySelector('#role');
 
 const submitButton = document.querySelector('#submit');
 
@@ -14,9 +11,7 @@ const first_name_error = document.querySelector('.first-name-feedback');
 const last_name_error = document.querySelector('.last-name-feedback');
 const username_error = document.querySelector('.username-feedback');
 const email_error = document.querySelector('.email-feedback');
-const password_error = document.querySelector('.password-feedback');
-const confirm_password_error = document.querySelector('.confirm-password-feedback');
-const role_error = document.querySelector('.role-feedback');
+
 
 // Validate username from the backend
 first_name.addEventListener('keyup', (event)=>{

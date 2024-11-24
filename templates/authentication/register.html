@@ -13,13 +13,13 @@
         {% csrf_token %}
         <div class="form-row">
             <div class="input-data">
-                <input type="text" name="first-name" id="first-name" value="{{field_values.first_name}}" required>
+                <input type="text" name="first_name" id="first_name" value="{{field_values.first_name}}" required>
                 <div class="underline"></div>
                 <label for="">First Name</label>
                 <span class="invalid-feedback first-name-feedback" style="display: none;"></span>
             </div>
             <div class="input-data">
-                <input type="text" name="last-name" id="last-name" value="{{field_values.last_name}}" required>
+                <input type="text" name="last_name" id="last_name" value="{{field_values.last_name}}" required>
                 <div class="underline"></div>
                 <label for="">Last Name</label>
                 <span class="invalid-feedback last-name-feedback" style="display: none;"></span>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="input-data">
-                <input type="password" name="confirm-password" id="confirm-password" required>
+                <input type="password" name="confirm_password" id="confirm_password" required>
                 <div class="underline"></div>
                 <label for="confirm-password">Confirm Password</label>
                 <span class="invalid-feedback confirm-password-feedback" style="display: none;"></span>
@@ -72,7 +72,7 @@
         <div class="form-row submit-btn">
             <div class="input-data">
                 <div class="inner"></div>
-                <input type="submit" id="submit" name="submit">
+                <input type="submit" name="submit" id="submit" >
             </div>
         </div>
 

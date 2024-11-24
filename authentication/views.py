@@ -51,24 +51,44 @@ class Register(View):
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
-        confirm_password = request.POST['confirm-password']
+        confirm_password = request.POST['confirm_password']
         email = request.POST['email']
-        first_name = request.POST['first-name']
-        last_name = request.POST['last-name']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
         role = request.POST['role']
 
         context = {
-            'field_values': {
-                'username': username,
-                'email': email,
-                'first_name': first_name,
-                'last_name': last_name,
-            },
+            'field_values': request.POST,
             'selected_role': role
         }
 
         if not first_name or not last_name or not username or not email or not password or not confirm_password or not role:
             messages.error(request, 'All fields are required. Please cross-check and provide the required information.')
+            return render(request, 'authentication/register.html', context)
+
+        # validate the user entries
+        if not str(first_name).isalpha():
+            messages.error(request, 'First name must contain letters only.')
+            return render(request, 'authentication/register.html', context)
+        
+        if not str(last_name).isalpha():
+            messages.error(request, 'Last name must contain letters only.')
+            return render(request, 'authentication/register.html', context)
+        
+        if not(str(username).isalnum()):
+            messages.error(request, 'Username must contain letters and numbers only.')
+            return render(request, 'authentication/register.html', context)
+        
+        if User.objects.filter(username = username).exists():
+            messages.error(request, 'Username taken. Choose another.')
+            return render(request, 'authentication/register.html', context)
+        
+        if not validate_email(email):
+            messages.error(request, 'Email is invalid. Please enter a valid email.')
+            return render(request, 'authentication/register.html', context)
+        
+        if User.objects.filter(email = email).exists():
+            messages.error(request, 'Email already exists. Use another email.')
             return render(request, 'authentication/register.html', context)
 
         if password != confirm_password:
@@ -84,13 +104,12 @@ class Register(View):
             user_profile = UserProfile(user = user, role = role)
             user_profile.save()
 
+            login(request, user)
             messages.success(request, f'{username}, your account was created successfully')
             return redirect ('authenticated')
         except Exception as e:
             messages.error(request, 'An error occurred while creating your account. Please try again.')
             return render(request, 'authentication/register.html', context)
-        
-
 
 class ValidateName(View):
     def post(self, request):

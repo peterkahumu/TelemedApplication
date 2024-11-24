@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import Register, Login, ValidateEmail, ValidateUsername, ValidateName, Logout
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -11,4 +13,4 @@ urlpatterns = [
     path('validate_username', csrf_exempt(ValidateUsername.as_view()), name='validate-username'),
     path('logout', Logout.as_view(), name = 'logout'),
     
-]
+] + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

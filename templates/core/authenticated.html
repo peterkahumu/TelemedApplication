@@ -3,7 +3,54 @@
 {% block title %}Authenticated{% endblock %}
 
 {% block content %}
-    You have just been authenticated into the program.
-    
-    {{request.user.username}}  {{request.user.id}}
-{% endblock %}  
+    <div class="container">
+        <h1>Welcome, {{ request.user.username }}!</h1>
+        <p>Your user ID is: {{ request.user.id }}</p>
+        
+        <p>You have just been authenticated into the program.</p>
+
+        <div class="blogs">
+            <h2>Medical Blogs</h2>
+            <div class="blog">
+                <h3>Understanding the Basics of Cardiology</h3>
+                <p>Cardiology is a branch of medicine that deals with the disorders of the heart as well as some parts of the circulatory system...</p>
+            </div>
+            <div class="blog">
+                <h3>The Importance of Mental Health</h3>
+                <p>Mental health includes our emotional, psychological, and social well-being. It affects how we think, feel, and act...</p>
+            </div>
+            <div class="blog">
+                <h3>Advancements in Cancer Treatment</h3>
+                <p>Recent advancements in cancer treatment have significantly improved the prognosis for many types of cancer...</p>
+            </div>
+            <div class="blog">
+                <h3>Nutrition and Its Impact on Health</h3>
+                <p>Good nutrition is an important part of leading a healthy lifestyle. Combined with physical activity, your diet can help you to reach and maintain a healthy weight...</p>
+            </div>
+            <div class="blog">
+                <h3>The Role of Genetics in Medicine</h3>
+                <p>Genetics plays a crucial role in understanding diseases and developing new treatments. Genetic research has led to significant breakthroughs in medicine...</p>
+            </div>
+            <div class="blog">
+                <h3>Understanding Diabetes</h3>
+                <p>Diabetes is a chronic disease that occurs when the pancreas is no longer able to make insulin, or when the body cannot make good use of the insulin it produces...</p>
+            </div>
+            <div class="blog">
+                <h3>Innovations in Surgical Techniques</h3>
+                <p>Innovations in surgical techniques have greatly improved patient outcomes and recovery times. Minimally invasive surgery, robotic surgery, and other advancements...</p>
+            </div>
+            <div class="blog">
+                <h3>The Impact of Sleep on Health</h3>
+                <p>Sleep is essential for good health. It plays a vital role in good health and well-being throughout your life. Getting enough quality sleep at the right times can help protect your mental health, physical health, quality of life, and safety...</p>
+            </div>
+            <div class="blog">
+                <h3>Understanding Infectious Diseases</h3>
+                <p>Infectious diseases are disorders caused by organisms such as bacteria, viruses, fungi, or parasites. Many organisms live in and on our bodies. They're normally harmless or even helpful, but under certain conditions, some organisms may cause disease...</p>
+            </div>
+            <div class="blog">
+                <h3>The Future of Telemedicine</h3>
+                <p>Telemedicine is the use of telecommunication technology to provide healthcare services remotely. It has become increasingly popular, especially during the COVID-19 pandemic...</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}```````````````````

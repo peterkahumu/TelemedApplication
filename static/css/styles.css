@@ -559,3 +559,11 @@ p {
     margin: 0 auto;
 }
 
+.sidebar-container {
+   
+    margin-right: -120px; 
+}
+
+.main-content-container { 
+    margin-left: -120px; 
+}

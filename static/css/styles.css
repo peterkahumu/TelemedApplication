@@ -180,7 +180,7 @@ input[type="submit"] {
     cursor: pointer;
     text-transform: uppercase;
     height: 40px;
-    width: 40%;
+    width: 100%;
     font-size: 17px;
     border-radius: 5px;
     

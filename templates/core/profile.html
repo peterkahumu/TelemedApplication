@@ -2,56 +2,30 @@
 {% load static %}
 {% block title %}Profile {% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <img src="{{user.userprofile.image.url}}" id="profile-picture"
-                        class="img-fluid rounded-circle mb-3" alt="Profile Picture">
-                    <h3 id="full-name">{{user.first_name}} {{user.last_name}}</h3>
-                    <p id="username">@{{user.username}}</p>
-                    <form id="upload-form" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="profile-picture-upload">Upload Profile Picture</label>
-                            <input type="file" class="form-control-file" id="profile-picture-upload" accept="image/*">
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="container d-flex justify-content-left align-items-center">
+    <div class="card">
+      <div class="upper">
+        <img src="{% static 'images/cover-photo.png' %}" class="img-fluid" width="100%">
+      </div>
+      <div class="user text-center">
+        <div class="profile">
+          <img src="{{user.userprofile.image.url}}" class="rounded-circle" width="150" height="150">
         </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h4>Update Profile</h4>
-                    <form id="update-profile-form">
-                        <div class="form-group">
-                            <label for="first-name">First Name</label>
-                            <input type="text" class="form-control" id="first-name" value="John">
-                        </div>
-                        <div class="form-group">
-                            <label for="last-name">Last Name</label>
-                            <input type="text" class="form-control" id="last-name" value="Doe">
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" value="johndoe">
-                        </div>
-                        <div class="form-group">
-                            <label for="bio">Bio</label>
-                            <textarea class="form-control" id="bio" rows="3">This is my bio...</textarea>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Update Profile">
-                    </form>
-                </div>
-            </div>
+      </div>
+      <div class="mt-5 text-center">
+        <h4 class="mb-0">{{user.first_name}} {{user.last_name}}</h4>
+        <span class="text-muted d-block mb-2">@{{user.username}}</span>
+        
+        <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+          <!-- Form to update the image. -->
+            <form method="post" enctype="multipart/form-data" id="update-image-form" name="update-image-form" action="{% url 'update_profile_image' %}">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="profile_picture" class="form-control mb-2" accept="image/*">
+
+                <button type="submit" class="btn btn-info mb-3" >Change Profile Picture</button>
+            </form>
         </div>
+      </div>
     </div>
-</div>
-
-
-{% block extra_js %}
-<script src="{% static 'js/profile.js' %}"></script>
-{% endblock %}
-
+  </div> 
 {% endblock %}

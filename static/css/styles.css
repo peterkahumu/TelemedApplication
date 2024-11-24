@@ -183,7 +183,7 @@ input[type="submit"] {
     width: 100%;
     font-size: 17px;
     border-radius: 5px;
-    
+
 }
 
 @media (max-width: 700px) {
@@ -554,16 +554,8 @@ p {
         transform: translateY(-5px);
     }
 }
-.mt-3{
+
+.mt-3 {
     max-width: fit-content !important;
     margin: 0 auto;
-}
-
-.sidebar-container {
-   
-    margin-right: -120px; 
-}
-
-.main-content-container { 
-    margin-left: -120px; 
 }

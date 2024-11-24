@@ -61,18 +61,21 @@
 
             <div class="input-data">
                 <select name="role" id="role" required>
-                    <option value="">Select Role</option>
-                    <option value="doctor" {% if selected_role == 'doctor' %} selected {%endif %}>Doctor</option>
-                    <option value="patient" {% if selected_role == 'patient' %} selected {%endif %}>Patient</option>
-                </select>
-                <span class="invalid-feedback role-feedback" style="display: none;"></span>
+                    <option value="" disabled>--- Select Role --- </option>
+                    {% for role in roles %}
+                        {% if selected_role == role.name %}
+                        <option value="{{ role.name }}" selected>{{ role.name }}</option>
+                        {% else %}
+                        <option value="{{ role.name }}">{{ role.name }}</option>
+                        {% endif %}
+                    {% endfor %}
             </div>
         </div>
 
         <div class="form-row submit-btn">
             <div class="input-data">
                 <div class="inner"></div>
-                <input type="submit" name="submit" id="submit" >
+                <input type="submit" name="submit" id="submit" value="Register">
             </div>
         </div>
 

@@ -5,7 +5,7 @@ import json
 from django.http import JsonResponse
 from validate_email import validate_email
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Roles
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -42,13 +42,17 @@ class Login(View):
 
 class Register(View):
     def get(self, request):
+
+        roles = Roles.objects.all()
         context = {
             'field_values': {}, 
             'selected_role': '',
+            'roles': roles,
         }
         return render(request, 'authentication/register.html',  context)
     
     def post(self, request):
+
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -57,9 +61,11 @@ class Register(View):
         last_name = request.POST['last_name']
         role = request.POST['role']
 
+        roles = Roles.objects.all()
         context = {
             'field_values': request.POST,
-            'selected_role': role
+            'selected_role': role,
+            'roles': roles,
         }
 
         if not first_name or not last_name or not username or not email or not password or not confirm_password or not role:

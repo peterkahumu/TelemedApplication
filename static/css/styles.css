@@ -173,17 +173,17 @@ nav ul li a:hover {
 }
 
 
-.input-data button {
-    background: none;
+input[type="submit"] {
+    background: #1a76d1;
+    color: white;
     border: none;
-    color: #fff;
-    font-size: 17px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     cursor: pointer;
-    position: relative;
-    z-index: 2;
+    text-transform: uppercase;
+    height: 40px;
+    width: 40%;
+    font-size: 17px;
+    border-radius: 5px;
+    
 }
 
 @media (max-width: 700px) {

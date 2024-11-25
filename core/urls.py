@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Authenticated, Index, Profile, UpdateProfileImage, UpdateProfileInfo
+from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 

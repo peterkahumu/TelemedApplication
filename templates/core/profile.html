@@ -15,9 +15,10 @@
             <img src="{{user.userprofile.image.url}}" class="rounded-circle" width="150" height="150">
           </div>
         </div>
-        <div class="mt-5 text-center">
+        <div class="mt-2 text-center">
           <h4 class="mb-0">{{user.first_name}} {{user.last_name}}</h4>
           <span class="text-muted d-block mb-2">@{{user.username}}</span>
+          <span class="aling-items-left small">{{user.userprofile.bio}}</span>
 
           <div class="d-flex justify-content-between align-items-center mt-4 px-4">
             <!-- Form to update the image. -->
@@ -56,7 +57,7 @@
 
           <div class="mb-3">
             <label for="bio" class="form-label">Bio</label>
-            <textarea class="form-control" id="bio" name="bio" rows="3" value="{{user.userprofile.bio}}"></textarea>
+            <textarea class="form-control" id="bio" name="bio" rows="3">{{user.userprofile.bio}}</textarea>
           </div>
 
           <div class="text-center">

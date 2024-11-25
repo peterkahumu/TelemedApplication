@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', Login.as_view(), name='login'),
     path('register', Register.as_view(), name = 'register'),
+    path('activate_account/<uidb64>/<token>', ActivateAccount.as_view(), name = 'activate_account'),
     path('validate_name', csrf_exempt(ValidateName.as_view()), name = 'validate-name'),
     path('validate_email', csrf_exempt(ValidateEmail.as_view()), name='validate-email'),
     path('validate_username', csrf_exempt(ValidateUsername.as_view()), name='validate-username'),

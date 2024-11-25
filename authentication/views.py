@@ -33,14 +33,19 @@ class Login(View):
             messages.error(request, 'All fields are required. Please check and try again.')
             return render(request, 'authentication/login.html', context)
         
-        user = authenticate(request, username = username, password = password)
-
-        if user is None:
+        try:
+            user = User.objects.get(username = username)
+        except User.DoesNotExist:
             messages.error(request, 'Invalid username or password. Please try again.')
             return render(request, 'authentication/login.html', context)
-        
-        if not user.is_active:
+
+        if user is not None and not user.is_active:
             messages.error(request, "Your account has not been activated. Please check your email to activate your account, then try again.")
+            return render(request, 'authentication/login.html', context)
+
+        user = authenticate(request, username = username, password = password)
+        if user is None:
+            messages.error(request, 'Invalid username or password. Please try again.')
             return render(request, 'authentication/login.html', context)
         
         try:
@@ -119,17 +124,19 @@ class Register(View):
         
         try:
             user = User.objects.create_user(username = username, email = email, password = password, first_name = first_name, last_name = last_name)
-            user_profile = UserProfile(user = user, role = role)
+            user.is_active =  False # deactivate the user account until the user activates the account.
+            user.save()
 
-            user.is_active = False # deactivate the user account until the email is verified.
+            user_profile = UserProfile(user = user, role = role)
             user_profile.save()
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = token_generator.make_token(user)
             domain = get_current_site(request).domain
-            link = reverse('activate_account', kwargs={
-                'uidb64': uidb64, 'token': token
-            })
+            link = reverse('activate_account', kwargs = {
+                    'uidb64': uidb64,
+                    'token': token
+                })
             activate_url = f"http://{domain}{link}"
             email_subject = "Activate your account"
             email_body = f'Hello, {user.username}, \n\nTo activate your account, click on the link below.\n\n{activate_url}'
@@ -146,7 +153,8 @@ class Register(View):
             return redirect('login')
 
         except Exception as e:
-            messages.error(request, 'An error occurred while creating your account. Please try again.')
+            user.delete()
+            messages.error(request, 'An error occurred while creating your account. Please try again.' + str(e))
             return render(request, 'authentication/register.html', context)
 
 class ActivateAccount(View):

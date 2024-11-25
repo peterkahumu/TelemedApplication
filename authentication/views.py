@@ -39,6 +39,10 @@ class Login(View):
             messages.error(request, 'Invalid username or password. Please try again.')
             return render(request, 'authentication/login.html', context)
         
+        if not user.is_active:
+            messages.error(request, "Your account has not been activated. Please check your email to activate your account, then try again.")
+            return render(request, 'authentication/login.html', context)
+        
         try:
             login(request, user)
             messages.success(request, f'Welcome back, {username}')
@@ -116,15 +120,56 @@ class Register(View):
         try:
             user = User.objects.create_user(username = username, email = email, password = password, first_name = first_name, last_name = last_name)
             user_profile = UserProfile(user = user, role = role)
+
+            user.is_active = False # deactivate the user account until the email is verified.
             user_profile.save()
 
-            login(request, user)
-            messages.success(request, f'{username}, your account was created successfully')
-            return redirect ('authenticated')
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = token_generator.make_token(user)
+            domain = get_current_site(request).domain
+            link = reverse('activate_account', kwargs={
+                'uidb64': uidb64, 'token': token
+            })
+            activate_url = f"http://{domain}{link}"
+            email_subject = "Activate your account"
+            email_body = f'Hello, {user.username}, \n\nTo activate your account, click on the link below.\n\n{activate_url}'
+            email = EmailMessage(
+                email_subject,
+                email_body,
+                'noreply@semycolon.com',
+                [email],
+            )
+
+            EmailThread(email).start()
+
+            messages.success(request, "Your account was created successfully. Please check your email to activate your account.")
+            return redirect('login')
+
         except Exception as e:
             messages.error(request, 'An error occurred while creating your account. Please try again.')
             return render(request, 'authentication/register.html', context)
 
+class ActivateAccount(View):
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk = uid)
+
+            if not token_generator.check_token(user, token):
+                messages.error(request, 'Account has already been activated. Please login to continue.')
+                return redirect('login')
+            
+            if user.is_active:
+                messages.info(request, 'Account already activated. Please login to continue.')
+                return redirect('login')
+            
+            user.is_active = True
+            user.save()
+            messages.success(request, "Account activated successfully. Login to proceed.")
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, 'An error occurred while activating your account. Please try again.')
+            return redirect('register')
 class ValidateName(View):
     def post(self, request):
         data = json.loads(request.body)

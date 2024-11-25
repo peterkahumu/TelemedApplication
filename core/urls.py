@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Authenticated, Index, Profile, UpdateProfileImage
+from .views import Authenticated, Index, Profile, UpdateProfileImage, UpdateProfileInfo
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -8,5 +8,6 @@ urlpatterns = [
     path('authenticated/', Authenticated.as_view(), name = 'authenticated'),
     path('profile/', Profile.as_view(), name = 'profile'),
     path('update-profile-image/', UpdateProfileImage.as_view(), name = 'update_profile_image'),
+    path('update-profile-info/', UpdateProfileInfo.as_view(), name = 'update_profile_info'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -41,22 +41,22 @@
           {% csrf_token %}
           <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{user.first_name}}" required>
+            <input type="text" class="form-control" id="first_name" name="first_name" value="{{user.first_name}}" required>
           </div>
 
           <div class="mb-3">
             <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{user.last_name}}" required>
+            <input type="text" class="form-control" id="last_name" name="last_name" value="{{user.last_name}}" required>
           </div>
 
           <div class="mb-3">
             <label for="username" class="form-label">username</label>
-            <input type="username" class="form-control" id="username" name="username" placeholder="{{user.username}}" required>
+            <input type="username" class="form-control" id="username" name="username" value="{{user.username}}" required>
           </div>
 
           <div class="mb-3">
             <label for="bio" class="form-label">Bio</label>
-            <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="{{user.userprofile.bio}}"></textarea>
+            <textarea class="form-control" id="bio" name="bio" rows="3" value="{{user.userprofile.bio}}"></textarea>
           </div>
 
           <div class="text-center">

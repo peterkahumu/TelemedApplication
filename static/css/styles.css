@@ -559,3 +559,7 @@ p {
     max-width: fit-content !important;
     margin: 0 auto;
 }
+
+.sticky-top {
+    width: 100%;
+}

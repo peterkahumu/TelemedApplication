@@ -3,54 +3,61 @@
 {% block title %}Authenticated{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Welcome, {{ request.user.username }}!</h1>
-        <p>Your user ID is: {{ request.user.id }}</p>
-        
-        <p>You have just been authenticated into the program.</p>
-
-        <div class="blogs">
-            <h2>Medical Blogs</h2>
-            <div class="blog">
-                <h3>Understanding the Basics of Cardiology</h3>
-                <p>Cardiology is a branch of medicine that deals with the disorders of the heart as well as some parts of the circulatory system...</p>
+<section class="schedule py-5">
+        <div class="row">
+            <!-- Emergency Cases -->
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <div class="single-schedule p-4 border rounded shadow-sm h-100">
+                    <div class="inner text-center">
+                        <div class="icon mb-3">
+                            <i class="fa fa-ambulance fa-3x text-primary"></i>
+                        </div>
+                        <div class="single-content">
+                            <span class="d-block text-uppercase fw-bold text-muted">Lorem Amet</span>
+                            <h4 class="mt-2">Emergency Cases</h4>
+                            <p class="text-muted">Lorem ipsum sit amet consectetur adipiscing elit. Vivamus et erat in lacus convallis sodales.</p>
+                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="blog">
-                <h3>The Importance of Mental Health</h3>
-                <p>Mental health includes our emotional, psychological, and social well-being. It affects how we think, feel, and act...</p>
+            <!-- Doctors Timetable -->
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <div class="single-schedule p-4 border rounded shadow-sm h-100">
+                    <div class="inner text-center">
+                        <div class="icon mb-3">
+                            <i class="icofont-prescription fa-3x text-primary"></i>
+                        </div>
+                        <div class="single-content">
+                            <span class="d-block text-uppercase fw-bold text-muted">Fusce Porttitor</span>
+                            <h4 class="mt-2">Doctors Timetable</h4>
+                            <p class="text-muted">Lorem ipsum sit amet consectetur adipiscing elit. Vivamus et erat in lacus convallis sodales.</p>
+                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="blog">
-                <h3>Advancements in Cancer Treatment</h3>
-                <p>Recent advancements in cancer treatment have significantly improved the prognosis for many types of cancer...</p>
-            </div>
-            <div class="blog">
-                <h3>Nutrition and Its Impact on Health</h3>
-                <p>Good nutrition is an important part of leading a healthy lifestyle. Combined with physical activity, your diet can help you to reach and maintain a healthy weight...</p>
-            </div>
-            <div class="blog">
-                <h3>The Role of Genetics in Medicine</h3>
-                <p>Genetics plays a crucial role in understanding diseases and developing new treatments. Genetic research has led to significant breakthroughs in medicine...</p>
-            </div>
-            <div class="blog">
-                <h3>Understanding Diabetes</h3>
-                <p>Diabetes is a chronic disease that occurs when the pancreas is no longer able to make insulin, or when the body cannot make good use of the insulin it produces...</p>
-            </div>
-            <div class="blog">
-                <h3>Innovations in Surgical Techniques</h3>
-                <p>Innovations in surgical techniques have greatly improved patient outcomes and recovery times. Minimally invasive surgery, robotic surgery, and other advancements...</p>
-            </div>
-            <div class="blog">
-                <h3>The Impact of Sleep on Health</h3>
-                <p>Sleep is essential for good health. It plays a vital role in good health and well-being throughout your life. Getting enough quality sleep at the right times can help protect your mental health, physical health, quality of life, and safety...</p>
-            </div>
-            <div class="blog">
-                <h3>Understanding Infectious Diseases</h3>
-                <p>Infectious diseases are disorders caused by organisms such as bacteria, viruses, fungi, or parasites. Many organisms live in and on our bodies. They're normally harmless or even helpful, but under certain conditions, some organisms may cause disease...</p>
-            </div>
-            <div class="blog">
-                <h3>The Future of Telemedicine</h3>
-                <p>Telemedicine is the use of telecommunication technology to provide healthcare services remotely. It has become increasingly popular, especially during the COVID-19 pandemic...</p>
+            <!-- Opening Hours -->
+            <div class="col-lg-4 col-md-12 col-12 mb-4">
+                <div class="single-schedule p-4 border rounded shadow-sm h-100">
+                    <div class="inner text-center">
+                        <div class="icon mb-3">
+                            <i class="icofont-ui-clock fa-3x text-primary"></i>
+                        </div>
+                        <div class="single-content">
+                            <span class="d-block text-uppercase fw-bold text-muted">Donec luctus</span>
+                            <h4 class="mt-2">Opening Hours</h4>
+                            <ul class="list-unstyled text-start mt-3">
+                                <li class="day mb-2"><strong>Monday - Friday:</strong> <span class="text-muted">8.00 - 20.00</span></li>
+                                <li class="day mb-2"><strong>Saturday:</strong> <span class="text-muted">9.00 - 18.30</span></li>
+                                <li class="day"><strong>Monday - Thursday:</strong> <span class="text-muted">9.00 - 15.00</span></li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+</section>
+
 {% endblock %}```````````````````

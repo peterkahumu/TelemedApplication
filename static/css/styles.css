@@ -560,6 +560,9 @@ p {
     margin: 0 auto;
 }
 
-.sticky-top {
-    width: 100%;
+/* Apply only in small devices. */
+@media (max-width: 700px) {
+    .sticky-top {
+        width: 100%;
+    }
 }

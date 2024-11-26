@@ -163,6 +163,7 @@ class ActivateAccount(View):
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk = uid)
 
+            # check if the token has already been used to activate the account.
             if not token_generator.check_token(user, token):
                 messages.error(request, 'Account has already been activated. Please login to continue.')
                 return redirect('login')
@@ -178,6 +179,7 @@ class ActivateAccount(View):
         except Exception as e:
             messages.error(request, 'An error occurred while activating your account. Please try again.')
             return redirect('register')
+        
 class ValidateName(View):
     def post(self, request):
         data = json.loads(request.body)

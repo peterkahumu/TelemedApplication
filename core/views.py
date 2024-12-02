@@ -15,7 +15,7 @@ class Authenticated(LoginRequiredMixin, View):
     redirect_field_name = 'next'
     
     def get(self, request):
-        return render(request, 'core/index.html')
+        return render(request, 'core/home.html')
 
 class Profile(LoginRequiredMixin, View):
     login_url = 'login'

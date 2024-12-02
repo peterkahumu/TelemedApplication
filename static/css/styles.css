@@ -55,10 +55,6 @@ nav ul li a:hover {
     color: #007BFF;
 }
 
-.container {
-    max-width: 800px;
-}
-
 .form-container {
     max-width: 800px;
     background: #fff;

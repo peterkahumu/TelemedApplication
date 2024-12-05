@@ -1223,3 +1223,35 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.form_container {
+  width: 100%;
+  max-width: 900px;
+  background-color: #1a76d1;
+  padding: 30px 20px;
+  margin: 0 auto;
+}
+
+.form_container .row {
+  width: 100%;
+}
+
+.form_container .col-lg-10,
+.form_container .col-md-12 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form_container .col-lg-10 .form-group,
+.form_container .col-md-12 .form-group {
+  flex: 0 0 48%;
+  margin: 1%;
+}
+
+@media (max-width: 768px) {
+  .form_container .col-lg-10 .form-group,
+  .form_container .col-md-12 .form-group {
+    flex: 0 0 100%;
+    margin: 0 0 15px 0;
+  }
+}

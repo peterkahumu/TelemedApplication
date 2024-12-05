@@ -203,7 +203,7 @@ class ValidateUsername(View):
             return JsonResponse({'username_error': 'Username must contain letters and numbers only'}, status = 400)
         
         if User.objects.filter(username = username).exists():
-            return JsonResponse({'username_error': 'Username taken. Choose another.'}, status=409)
+            return JsonResponse({'username_error': 'Username taken. Choose another one.'}, status=409)
         return JsonResponse({'username_valid': True})
 
 class ValidateEmail(View):

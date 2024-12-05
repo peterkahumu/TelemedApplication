@@ -12,16 +12,17 @@
             <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
         </div>
 
-        <form class="row g-3 needs-validation" novalidate>
+        <form class="row g-3 needs-validation" novalidate action="{% url 'register' %}" method="post">
+            {% csrf_token %}
             <div class="col-md-6">
                 <label for="first_name" class="form-label">First Name</label>
-                <input type="text" name="first_name" class="form-control" id="first_name" required>
+                <input type="text" name="first_name" class="form-control" id="first_name" value="{{field_values.first_name}}" required>
                 <div class="invalid-feedback" id="fname-invalid">Please, enter your first name!</div>
             </div>
 
             <div class="col-md-6">
                 <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" name="last_name" class="form-control" id="last_name" required>
+                <input type="text" name="last_name" class="form-control" id="last_name" value="{{field_values.last_name}}" required>
                 <div class="invalid-feedback" id="lname-invalid">Please, enter your last name!</div>
             </div>
 
@@ -29,14 +30,14 @@
                 <label for="username" class="form-label">Username</label>
                 <div class="input-group has-validation">
                     <span class="input-group-text" id="inputGroupPrepend">@</span>
-                    <input type="text" name="username" class="form-control" id="username" required>
+                    <input type="text" name="username" class="form-control" id="username" value="{{field_values.username}}" required>
                     <div class="invalid-feedback" id="username-invalid">Please choose a username.</div>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <label for="email" class="form-label">Your Email</label>
-                <input type="email" name="email" class="form-control" id="email" required>
+                <input type="email" name="email" class="form-control" id="email" value="{{field_values.email}}" required>
                 <div class="invalid-feedback" id="email-invalid">Please enter a valid Email adddress!</div>
             </div>
 
@@ -56,9 +57,13 @@
                 <label for="role" class="form-label">Role</label>
                 <select name="role" class="form-control" id="role">
                     <option value="" selected disabled>-- Please select your role -- </option>
-                    <option value="patient">Patient</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="admin">Admin</option>
+                    {% for role in roles %}
+                    {% if role.name == field_values.role %}
+                    <option value="{{role.name}}" selected>{{role.name}}</option>
+                    {% else %}
+                    <option value="{{role.name}}">{{role.name}}</option>
+                    {% endif %}
+                    {% endfor %}
                 </select>
             </div>
 
@@ -76,7 +81,7 @@
                 <button class="btn btn-primary w-100" name="submit" id="submit" type="submit">Create Account</button>
             </div>
             <div class="col-12">
-                <p class="small mb-0">Already have an account? <a href="pages-login.html">Log in</a></p>
+                <p class="small mb-0">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
             </div>
         </form>
 

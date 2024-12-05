@@ -356,6 +356,9 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
+      <!-- Messages -->
+      {% include 'partials/_messages.html' %}
+
       <h1>Welcome, {{user.first_name}} {{user.last_name}}</h1>
       <nav>
         <ol class="breadcrumb">
@@ -385,6 +388,8 @@
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Template Main JS File -->
+  {% block scripts %} <!--Handle extra scripts specific to certain pages. --> {% endblock %}
+  <script src="{% static 'js/messages.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
 
 </body>

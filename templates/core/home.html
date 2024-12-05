@@ -1,65 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Authenticated{% endblock %}
-
+{% block title %} Home {% endblock %}
 {% block content %}
-<section class="schedule  py-5">
-    <div class="container">
-        <div class="row w-100">
-            <!-- Emergency Cases -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="single-schedule p-4 border rounded shadow-sm h-100 bg-light">
-                    <div class="inner text-center">
-                        <div class="icon mb-3">
-                            <i class="fa fa-ambulance fa-3x text-primary"></i>
-                        </div>
-                        <div class="single-content">
-                            <span class="d-block text-uppercase fw-bold text-muted">Lorem Amet</span>
-                            <h4 class="mt-2">Emergency Cases</h4>
-                            <p class="text-muted">Lorem ipsum sit amet consectetur adipiscing elit. Vivamus et erat in lacus convallis sodales.</p>
-                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Doctors Timetable -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="single-schedule p-4 border rounded shadow-sm h-100 bg-light">
-                    <div class="inner text-center">
-                        <div class="icon mb-3">
-                            <i class="icofont-prescription fa-3x text-primary"></i>
-                        </div>
-                        <div class="single-content">
-                            <span class="d-block text-uppercase fw-bold text-muted">Fusce Porttitor</span>
-                            <h4 class="mt-2">Doctors Timetable</h4>
-                            <p class="text-muted">Lorem ipsum sit amet consectetur adipiscing elit. Vivamus et erat in lacus convallis sodales.</p>
-                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Opening Hours -->
-            <div class="col-lg-4 col-md-12 col-12 mb-4">
-                <div class="single-schedule p-4 border rounded shadow-sm h-100 bg-light">
-                    <div class="inner text-center">
-                        <div class="icon mb-3">
-                            <i class="icofont-ui-clock fa-3x text-primary"></i>
-                        </div>
-                        <div class="single-content">
-                            <span class="d-block text-uppercase fw-bold text-muted">Donec luctus</span>
-                            <h4 class="mt-2">Opening Hours</h4>
-                            <ul class="list-unstyled text-start mt-3">
-                                <li class="day mb-2"><strong>Monday - Friday:</strong> <span class="text-muted">8.00 - 20.00</span></li>
-                                <li class="day mb-2"><strong>Saturday:</strong> <span class="text-muted">9.00 - 18.30</span></li>
-                                <li class="day"><strong>Monday - Thursday:</strong> <span class="text-muted">9.00 - 15.00</span></li>
-                            </ul>
-                            <a href="#" class="btn btn-outline-primary mt-3">LEARN MORE <i class="fa fa-long-arrow-right"></i></a>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- left-side items -->
+            <div class="row">
+                <div class="col-md-6 col-xxl-4">
+                    <div class="card info-card welcome-card">
+                        <h5 class="card-title">Welcome {{user.first_name.title}}</h5>
+                        <div class="cart-body">
+                            <p class="cart-text">Thank you for choosing this application. We are commited to ensuring that each person is always connected to those they love.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+         
+        <div class="col-md-4">
+            <!-- Right side items -->
+        </div>
     </div>
 </section>
+
+
 
 {% endblock %}

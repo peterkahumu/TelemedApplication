@@ -41,12 +41,14 @@ class UpdateProfileImage(LoginRequiredMixin, View):
                 
             image = request.FILES['profile_picture']
 
-            # delete the existing image permanently and save the new one.
-            profile.image.delete()
+            if not profile.image.name == profile.image.field.default:
+                profile.image.delete() # delete the old image if it was not the default image.
+            
             profile.image = image        
             profile.save()
             messages.success(request, 'Profile picture updated successfully')
             return redirect('profile')
+        
         # cant find the user profile
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try')

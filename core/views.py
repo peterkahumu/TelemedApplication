@@ -7,7 +7,7 @@ from django.contrib import messages
 # Create your views here.
 class Index(View):
     def get(self, request):
-        return render(request, 'core/index.html')
+        return render(request, 'index.html')
 
 
 class Authenticated(LoginRequiredMixin, View):

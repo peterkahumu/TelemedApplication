@@ -22,14 +22,14 @@ class Profile(LoginRequiredMixin, View):
     redirect_field_name = 'next'
     
     def get(self, request):
-        return render(request, 'core/profile.html')
+        return render(request, 'profile/profile.html')
 
 class UpdateProfileImage(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
 
     def get(self, request):
-        return render(request, 'core/profile.html')
+        return render(request, 'profile/profile.html')
 
     def post(self, request):
         try:            

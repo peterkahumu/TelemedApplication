@@ -57,22 +57,22 @@
         <!-- Profile nav -->
         <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'profile' %}" data-bs-toggle="dropdown">
             <img src="{{user.userprofile.image.url}}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name.title}}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>{{ user.first_name.title}} {{user.last_name.title}}</h6>
+              <span>{{user.userprofile.role}}</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'profile' %}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -366,8 +366,8 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
+          <li class="breadcrumb-item">{% block page_category %} {% endblock%}</li>
+          <li class="breadcrumb-item active">{% block page_title %} {% endblock %}</li> 
         </ol>
       </nav>
     </div><!-- End Page Title -->

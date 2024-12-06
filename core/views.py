@@ -43,6 +43,7 @@ class UpdateProfileImage(LoginRequiredMixin, View):
 
             if not profile.image.name == profile.image.field.default:
                 profile.image.delete() # delete the old image if it was not the default image.
+                
             profile.image = image        
             profile.save()
             messages.success(request, 'Profile picture updated successfully')

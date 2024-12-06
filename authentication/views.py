@@ -22,38 +22,42 @@ class Login(View):
         return render(request, 'authentication/login.html')
     
     def post(self, request):
-        username = request.POST['username']
+        identifier = request.POST['usernameEmail']  # username or email.
         password = request.POST['password']
 
         context = {
-            'username': username,
+            'username': identifier,
             }
 
-        if not username or not password:
+        if not identifier or not password:
             messages.error(request, 'All fields are required. Please check and try again.')
             return render(request, 'authentication/login.html', context)
         
         try:
-            user = User.objects.get(username = username)
+            if '@' in identifier:
+                user = User.objects.get(email = identifier)
+            else:
+                user = User.objects.get(username = identifier)
+          
         except User.DoesNotExist:
-            messages.error(request, 'Invalid username or password. Please try again.')
+            messages.error(request, 'Invalid username/email or password. Please try again.')
             return render(request, 'authentication/login.html', context)
 
         if user is not None and not user.is_active:
             messages.error(request, "Your account has not been activated. Please check your email to activate your account, then try again.")
             return render(request, 'authentication/login.html', context)
 
-        user = authenticate(request, username = username, password = password)
+        user = authenticate(request, username = user.username, password = password)
         if user is None:
             messages.error(request, 'Invalid username or password. Please try again.')
             return render(request, 'authentication/login.html', context)
         
         try:
             login(request, user)
-            messages.success(request, f'Welcome back, {username}')
+            messages.success(request, f'Welcome back, {user.username}')
             return redirect('authenticated')
         except Exception as e:
-            messages.error(request, 'An error occurred while logging in. Please try again.')
+            messages.error(request, 'An error occurred while logging in. Please try again, ', e)
             return render(request, 'authentication/login.html', context)
     
 

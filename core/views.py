@@ -10,7 +10,7 @@ class Index(View):
         return render(request, 'index.html')
 
 
-class Authenticated(LoginRequiredMixin, View):
+class Home(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
     

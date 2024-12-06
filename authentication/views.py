@@ -55,7 +55,7 @@ class Login(View):
         try:
             login(request, user)
             messages.success(request, f'Welcome back, {user.username}')
-            return redirect('authenticated')
+            return redirect('home')
         except Exception as e:
             messages.error(request, 'An error occurred while logging in. Please try again, ', e)
             return render(request, 'authentication/login.html', context)
@@ -230,7 +230,7 @@ class Logout(View):
             return redirect('login')
         except Exception as e:
             messages.error(request, 'An error occurred while logging out. Please try again.')
-            return redirect('authenticated')
+            return redirect('home')
 
 class ResetPassword(View):
     def get(self, request):

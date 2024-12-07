@@ -100,6 +100,49 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
         except Exception as e:
             messages.error(request, 'An error occurred while updating your profile. Please try again later')
             return redirect(f"{reverse('profile')}#profile-edit")
+        
+class UpdatePassword(LoginRequiredMixin, View):
+    login_url = 'login'
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        return redirect(f"{reverse('profile')}#password-edit")
+    
+    
+    def post(self, request):
+        try:
+            user = request.user
+            current_password = request.POST['current_password']
+            new_password = request.POST['new_password']
+            confirm_password = request.POST['confirm_password']
+
+            if not current_password or not new_password or not confirm_password:
+                messages.error(request, 'Please fill in all the fields.')
+                return redirect(f"{reverse('profile')}#password-edit")
+
+            if not user.check_password(current_password):
+                messages.error(request, 'The old password you provided is incorrect.')
+                return redirect(f"{reverse('profile')}#password-edit")
+            
+            if new_password != confirm_password:
+                messages.error(request, 'The new password and confirm password do not match.')
+                return redirect(f"{reverse('profile')}#password-edit")
+
+            if new_password == current_password:
+                messages.error(request, 'The new password cannot be the same as the old password.')
+                return redirect(f"{reverse('profile')}#password-edit")
+
+            if len(new_password) < 6:
+                messages.error(request, 'The new password must be at least 6 characters long.')
+                return redirect(f"{reverse('profile')}#password-edit")
+            
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, 'Password updated successfully')
+            return redirect(f"profile")
+        except Exception as e:
+            messages.error(request, 'An error occurred while updating your password. Please try again later')
+            return redirect(f"{reverse('profile')}#password-edit")
 
 class DeleteProfileImage(LoginRequiredMixin, View):
     login_url = 'login'

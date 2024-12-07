@@ -96,13 +96,36 @@
                     </div>
                   </form>
 
-                  <form action="{% url 'delete_profile_image' %}" method="post">
-                   <div class="pt-2">
-                     <!-- Form to delete the profile image. -->
-                     {% csrf_token %}
-                     <button type="submit" class="btn btn-danger" title="Delete"><i class="bi bi-trash"></i> Delete</button>
-                   </div>
+                  <!-- Delete Profile Picture Button -->
+                  <form id="deleteProfileImageForm" method="post" action="{% url 'delete_profile_image' %}" class="pt-2">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteConfirmationModal">
+                      Delete Profile Picture
+                    </button>
                   </form>
+
+                  <!-- Delete Confirmation Modal -->
+                  <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+                    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to delete your profile picture? This action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" form="deleteProfileImageForm" class="btn btn-danger">Yes,
+                            Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 

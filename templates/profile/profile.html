@@ -87,6 +87,7 @@
                 <div class="col-md-8 col-lg-9">
                   <img src="{{user.userprofile.image.url}}" alt="Profile">
                   <form method="post" action="{% url 'update_profile_image' %}" enctype="multipart/form-data">
+                    <!-- Form to update the user profile photo. -->
                     {% csrf_token %}
                     <div class="pt-2">
                       <input type="file" name="profile_picture" id="profile_picture" class="form-control mb-2">
@@ -95,6 +96,13 @@
                     </div>
                   </form>
 
+                  <form action="{% url 'delete_profile_image' %}" method="post">
+                   <div class="pt-2">
+                     <!-- Form to delete the profile image. -->
+                     {% csrf_token %}
+                     <button type="submit" class="btn btn-danger" title="Delete"><i class="bi bi-trash"></i> Delete</button>
+                   </div>
+                  </form>
                 </div>
               </div>
 

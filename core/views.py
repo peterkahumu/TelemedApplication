@@ -101,3 +101,29 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
         except Exception as e:
             messages.error(request, 'An error occurred while updating your profile. Please try again later')
             return redirect('profile')
+
+class DeleteProfileImage(LoginRequiredMixin, View):
+    login_url = 'login'
+    redirect_field_name = 'next'
+
+    def post(self, request):
+        try: 
+            profile = UserProfile.objects.get(user = request.user)
+
+            if profile.image.name == profile.image.field.default:
+                messages.error(request, "You don't have a profile picture to delete.")
+                return redirect('profile')
+            
+            profile.image.delete()
+            # set the image to the default image
+            profile.image = profile.image.field.default
+            profile.save()
+            
+            messages.success(request, 'Profile picture deleted successfully')
+            return redirect('profile')
+        except UserProfile.DoesNotExist:
+            messages.error(request, 'Trouble associating you with a profile. Please try again later.')
+            return redirect('profile')
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting your profile picture. Please try again later')
+            return redirect('profile')

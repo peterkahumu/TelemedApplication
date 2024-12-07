@@ -90,7 +90,7 @@
                     <!-- Form to update the user profile photo. -->
                     {% csrf_token %}
                     <div class="pt-2">
-                      <input type="file" name="profile_picture" id="profile_picture" class="form-control mb-2">
+                      <input type="file" name="profile_picture" id="profile_picture" class="form-control mb-2" required>
                       <button type="submit" class="btn btn-primary" title="Upload"><i class="bi bi-upload"></i>
                         Upload</button>
                     </div>

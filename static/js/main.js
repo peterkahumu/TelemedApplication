@@ -1,4 +1,23 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if there is a hash in the URL
+    const hash = window.location.hash;
 
+    // If the hash corresponds to a tab, activate it
+    if (hash) {
+      const tabButton = document.querySelector(`[data-bs-target="${hash}"]`);
+      const tabContent = document.querySelector(hash);
+
+      if (tabButton && tabContent) {
+        // Deactivate any currently active tabs
+        document.querySelectorAll('.nav-link.active').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-pane.active').forEach(tab => tab.classList.remove('show', 'active'));
+
+        // Activate the new tab
+        tabButton.classList.add('active');
+        tabContent.classList.add('show', 'active');
+      }
+    }
+  });
 
 (function() {
   "use strict";

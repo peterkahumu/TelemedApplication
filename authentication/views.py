@@ -61,122 +61,120 @@ class Login(View):
             return render(request, 'authentication/login.html', context)
     
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
+from django.urls import reverse
+from django.contrib.auth.models import User
+from django.utils.http import urlsafe_base64_encode, force_bytes
+from .models import Roles, Doctor, UserProfile
+from .utils import validate_email, token_generator
+from .email_thread import EmailThread  # Assuming this is the email sending functionality
+
 class Register(View):
     def get(self, request):
-
         roles = Roles.objects.all()
-        context = {
-            'roles': roles,
-        }
-        return render(request, 'authentication/register.html',  context)
-    
+        return render(request, 'authentication/register.html', {'roles': roles})
+
     def post(self, request):
+        # Get form data
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        role_id = request.POST.get('role')
 
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        role = request.POST['role']
-
+        # Collect all form field values in context
         roles = Roles.objects.all()
         context = {
             'field_values': request.POST,
-            'selected_role': role,
             'roles': roles,
         }
 
-        if not first_name or not last_name or not username or not email or not password or not confirm_password or not role:
+        # Basic field validation
+        if not all([first_name, last_name, username, email, password, confirm_password, role_id]):
             messages.error(request, 'All fields are required. Please cross-check and provide the required information.')
             return render(request, 'authentication/register.html', context)
 
-        # validate the user entries
-        if not str(first_name).isalpha():
+        # Validate name fields
+        if not first_name.isalpha():
             messages.error(request, 'First name must contain letters only.')
             return render(request, 'authentication/register.html', context)
-        
-        if not str(last_name).isalpha():
+        if not last_name.isalpha():
             messages.error(request, 'Last name must contain letters only.')
             return render(request, 'authentication/register.html', context)
-        
-        if not(str(username).isalnum()):
+
+        # Validate username
+        if not username.isalnum():
             messages.error(request, 'Username must contain letters and numbers only.')
             return render(request, 'authentication/register.html', context)
-        
-        if User.objects.filter(username = username).exists():
+        if User.objects.filter(username=username).exists():
             messages.error(request, 'Username taken. Choose another.')
             return render(request, 'authentication/register.html', context)
-        
+
+        # Validate email
         if not validate_email(email):
             messages.error(request, 'Email is invalid. Please enter a valid email.')
             return render(request, 'authentication/register.html', context)
-        
-        if User.objects.filter(email = email).exists():
+        if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists. Use another email.')
             return render(request, 'authentication/register.html', context)
 
+        # Validate password
         if password != confirm_password:
-            messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match.")
             return render(request, 'authentication/register.html', context)
-           
         if len(password) < 6:
-            messages.error(request, 'Password too short. Please use at least 6 characters')
+            messages.error(request, 'Password too short. Please use at least 6 characters.')
             return render(request, 'authentication/register.html', context)
-        
-        # get the role object based on the id passed by the user.
+
+        # Get the role object and validate
         try:
-            role = Roles.objects.get(id = role)
+            role = Roles.objects.get(id=role_id)
         except Roles.DoesNotExist:
             messages.error(request, 'Invalid role selected. Please select a valid role.')
             return render(request, 'authentication/register.html', context)
-        
+
+        # Validate additional fields for Doctor role
         if role.name == "Doctor":
-            specialty = request.POST['specialty']
-            license_number = request.POST['license_number']
+            specialty = request.POST.get('specialty')
+            license_number = request.POST.get('license_number')
 
             if not specialty:
                 messages.error(request, "Specialty field is required for doctors.")
                 return render(request, 'authentication/register.html', context)
-            
             if not license_number:
                 messages.error(request, "License number field is required for doctors.")
                 return render(request, 'authentication/register.html', context)
 
+        # Create user and user profile
         try:
-            user = User.objects.create_user(username = username, email = email, password = password, first_name = first_name, last_name = last_name)
-            user.is_active =  False # deactivate the user account until the user activates the account.
+            user = User.objects.create_user(
+                username=username, email=email, password=password,
+                first_name=first_name, last_name=last_name
+            )
+            user.is_active = False  # Deactivate user account until activation
             user.save()
 
-            user_profile = UserProfile(user = user, role = role)
+            user_profile = UserProfile(user=user, role=role)
             user_profile.save()
 
+            # Create doctor if the role is Doctor
             if role.name == "Doctor":
-                doctor = Doctor.objects.create(user_profile = user_profile, specialty = specialty, license_number = license_number)
-                doctor.save()
+                Doctor.objects.create(user_profile=user_profile, specialty=specialty, license_number=license_number)
 
-                if not Doctor.objects.filter(user_profile = user_profile).exists():
-                    user.delete()
-                    messages.error(request, 'An error occurred while creating Doctors your account. Please try again.')
-                    return render(request, 'authentication/register.html', context)
-
+            # Send activation email
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = token_generator.make_token(user)
             domain = get_current_site(request).domain
-            link = reverse('activate_account', kwargs = {
-                    'uidb64': uidb64,
-                    'token': token
-                })
+            link = reverse('activate_account', kwargs={'uidb64': uidb64, 'token': token})
             activate_url = f"http://{domain}{link}"
             email_subject = "Activate your account"
-            email_body = f'Hello, {user.username}, \n\nTo activate your account, click on the link below.\n\n{activate_url}'
-            email = EmailMessage(
-                email_subject,
-                email_body,
-                'noreply@semycolon.com',
-                [email],
-            )
+            email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
 
+            email = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
             EmailThread(email).start()
 
             messages.success(request, "Your account was created successfully. Please check your email to activate your account.")
@@ -184,8 +182,9 @@ class Register(View):
 
         except Exception as e:
             user.delete()
-            messages.error(request, 'An error occurred while creating your account. Please try again.' + str(e))
+            messages.error(request, f'An error occurred while creating your account. Please try again. {str(e)}')
             return render(request, 'authentication/register.html', context)
+
 
 class ActivateAccount(View):
     def get(self, request, uidb64, token):

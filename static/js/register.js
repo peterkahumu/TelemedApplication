@@ -157,3 +157,14 @@ email.addEventListener('keyup', (event) => {
         }
     }, 300);
 });
+
+// Toogle the doctors fields when the user selects the doctor option
+document.getElementById('role').addEventListener('change', function () {
+    const role = this.value;
+    const doctorFields = document.getElementById('doctorFields');
+    if (role === 'Doctor') {
+        doctorFields.style.display = 'block';
+    } else {
+        doctorFields.style.display = 'none';
+    }
+});

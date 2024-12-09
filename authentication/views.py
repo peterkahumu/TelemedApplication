@@ -227,7 +227,7 @@ class Logout(View):
         try:
             logout(request)
             messages.success(request, 'You have been logged out successfully.')
-            return redirect('login')
+            return redirect('index')
         except Exception as e:
             messages.error(request, 'An error occurred while logging out. Please try again.')
             return redirect('home')

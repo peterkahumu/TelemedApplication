@@ -60,17 +60,6 @@ class Login(View):
             messages.error(request, 'An error occurred while logging in. Please try again, ', e)
             return render(request, 'authentication/login.html', context)
     
-
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.core.mail import EmailMessage
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.utils.http import urlsafe_base64_encode, force_bytes
-from .models import Roles, Doctor, UserProfile
-from .utils import validate_email, token_generator
-from .email_thread import EmailThread  # Assuming this is the email sending functionality
-
 class Register(View):
     def get(self, request):
         roles = Roles.objects.all()

@@ -167,4 +167,12 @@ document.getElementById('role').addEventListener('change', function () {
     } else {
         doctorFields.style.display = 'none';
     }
-});
+}); // when the user changes the role.
+
+window.addEventListener('load', function () {
+    const role = document.getElementById('role').value;
+    const doctorFields = document.getElementById('doctorFields');
+    if (role == '2') { 
+        doctorFields.style.display = 'block';
+    }
+}); //when the form is rendered from the backend

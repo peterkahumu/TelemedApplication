@@ -56,13 +56,13 @@
                 <input type="password" name="confirm_password" class="form-control" id="confirm_password" required>
                 <div class="invalid-feedback">Please enter your password!</div>
             </div>
-
+           
             <div class="col-md-12">
                 <label for="role" class="form-label">Role</label>
                 <select name="role" class="form-control" id="role" required>
                     <option value="" selected disabled>-- Please select your role -- </option>
                     {% for role in roles %}
-                    {% if role.name == field_values.role %}
+                    {% if role.id|stringformat:'s' == field_values.role %}
                     <option value="{{role.id}}" selected>{{role.name}}</option>
                     {% else %}
                     <option value="{{role.id}}">{{role.name}}</option>

@@ -162,7 +162,7 @@ email.addEventListener('keyup', (event) => {
 document.getElementById('role').addEventListener('change', function () {
     const role = this.value;
     const doctorFields = document.getElementById('doctorFields');
-    if (role === 'Doctor') {
+    if (role == '2') { // This is the id to the doctors field.
         doctorFields.style.display = 'block';
     } else {
         doctorFields.style.display = 'none';

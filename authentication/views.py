@@ -5,7 +5,7 @@ import json
 from django.http import JsonResponse
 from validate_email import validate_email
 from django.contrib.auth.models import User
-from .models import UserProfile, Roles
+from .models import UserProfile, Roles, Doctor
 from django.contrib.auth import authenticate, login, logout
 from django.utils.encoding import force_bytes, force_str,   DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -66,8 +66,6 @@ class Register(View):
 
         roles = Roles.objects.all()
         context = {
-            'field_values': {}, 
-            'selected_role': '',
             'roles': roles,
         }
         return render(request, 'authentication/register.html',  context)
@@ -126,6 +124,25 @@ class Register(View):
             messages.error(request, 'Password too short. Please use at least 6 characters')
             return render(request, 'authentication/register.html', context)
         
+        # get the role object based on the id passed by the user.
+        try:
+            role = Roles.objects.get(id = role)
+        except Roles.DoesNotExist:
+            messages.error(request, 'Invalid role selected. Please select a valid role.')
+            return render(request, 'authentication/register.html', context)
+        
+        if role.name == "Doctor":
+            specialty = request.POST['specialty']
+            license_number = request.POST['license_number']
+
+            if not specialty:
+                messages.error(request, "Specialty field is required for doctors.")
+                return render(request, 'authentication/register.html', context)
+            
+            if not license_number:
+                messages.error(request, "License number field is required for doctors.")
+                return render(request, 'authentication/register.html', context)
+
         try:
             user = User.objects.create_user(username = username, email = email, password = password, first_name = first_name, last_name = last_name)
             user.is_active =  False # deactivate the user account until the user activates the account.
@@ -133,6 +150,15 @@ class Register(View):
 
             user_profile = UserProfile(user = user, role = role)
             user_profile.save()
+
+            if role.name == "Doctor":
+                doctor = Doctor.objects.create(user_profile = user_profile, specialty = specialty, license_number = license_number)
+                doctor.save()
+
+                if not Doctor.objects.filter(user_profile = user_profile).exists():
+                    user.delete()
+                    messages.error(request, 'An error occurred while creating Doctors your account. Please try again.')
+                    return render(request, 'authentication/register.html', context)
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = token_generator.make_token(user)

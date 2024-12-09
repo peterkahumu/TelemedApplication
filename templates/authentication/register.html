@@ -63,9 +63,9 @@
                     <option value="" selected disabled>-- Please select your role -- </option>
                     {% for role in roles %}
                     {% if role.name == field_values.role %}
-                    <option value="{{role.name}}" selected>{{role.name}}</option>
+                    <option value="{{role.id}}" selected>{{role.name}}</option>
                     {% else %}
-                    <option value="{{role.name}}">{{role.name}}</option>
+                    <option value="{{role.id}}">{{role.name}}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
@@ -75,15 +75,16 @@
 
             <!-- ========= Doctors Additional fields. Appears only when the user selects role as a doctor. ===  -->
             <div id="doctorFields" style="display: none;">
-                <div class="col-md-6">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" name="specialty" class="form-control" id="specialty" value="{{field_values.last_name}}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Specialty</label>
+                        <input type="text" name="specialty" class="form-control" id="specialty" value="{{field_values.specialty}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="license_number" class="form-label">License Number</label>
+                        <input type="text" name="license_number" class="form-control" id="license_number" value="{{field_values.license_number}}">
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="license_number" class="form-label">License Number</label>
-                    <input type="text" name="license_number" class="form-control" id="license_number">
-                </div>
-
             </div>
 
 

@@ -147,6 +147,10 @@ class Register(View):
             user.is_active = False  # Deactivate user account until activation
             user.save()
 
+            if role_id == 1:
+                user.is_staff = True
+                user.save() # make the user a staff user if the  role is admin.
+
             user_profile = UserProfile(user=user, role=role)
             user_profile.save()
 

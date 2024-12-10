@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from authentication.models import UserProfile, User
+from authentication.models import UserProfile, User, Doctor
 from django.contrib import messages
 from django.urls import reverse
 
@@ -65,6 +65,9 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
     def get(self, request):
         return redirect(f"{reverse('profile')}#profile-edit")
     
+    def redirect_profile(self): # Redirects user to the profile edit section.
+        return redirect(f"{reverse('profile')}#profile-edit")
+    
     def post(self, request):
         try:
             user = request.user
@@ -75,31 +78,53 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
             last_name = request.POST['last_name']
             username = request.POST['username']
 
-            if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio:
-                messages.info(request, 'No changes were made to your profile')
-                return redirect(f"{reverse('profile')}#profile-edit")
+            if user.userprofile.role.name == "Doctor":
+                specialty = request.POST['specialty']
+                charge_per_hour = request.POST['charge_per_hour']
+
+                if not float(charge_per_hour):
+                    messages.warning(request, 'The charge per hour must be a number.')
+                    return self.redirect_profile()
+                
+            # role base validation
+            if user.userprofile.role.name == "Doctor": # if the user is a doctor
+                if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio and specialty == user.userprofile.doctor.specialty and charge_per_hour == user.userprofile.doctor.charge_per_hour:
+                    messages.info(request, 'No changes were made to your profile.')
+                    return self.redirect_profile()
+            else:
+                if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio:
+                    messages.info(request, 'No changes were made to your profile.')
+                    return self.redirect_profile()  
+            
             if username != user.username and User.objects.filter(username = username).exists():
                 messages.error(request, 'The username you provided is already taken. Please choose another one.')
-                return redirect(f"{reverse('profile')}#profile-edit")
+                return self.redirect_profile()
 
            
             user.first_name = first_name
             user.last_name = last_name
             user.username = username
             user_profile.bio = updated_bio
+
             user.save()
             user_profile.save()
 
+            if user.userprofile.role.name == "Doctor":
+                doctor = Doctor.objects.get(user_profile = user_profile)
+                doctor.specialty = specialty
+                doctor.charge_per_hour = charge_per_hour
+                doctor.save()
+
             messages.success(request, 'Profile updated successfully')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return self.redirect_profile()
         
             
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try again later.')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return self.redirect_profile()
         except Exception as e:
-            messages.error(request, 'An error occurred while updating your profile. Please try again later')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            messages.error(request, f'An error occurred while updating your profile. Please try again later, {e}')
+            return self.redirect_profile()
         
 class UpdatePassword(LoginRequiredMixin, View):
     login_url = 'login'
@@ -175,12 +200,19 @@ class DeleteProfileImage(LoginRequiredMixin, View):
 
 class ViewProfile(View):
     def get(self, request, id):
-        # subject refers the user whose profile is being viewed
-        subject = User.objects.get(pk = id)
+        try:
+            # subject refers the user whose profile is being viewed
+            subject = User.objects.get(pk = id)
 
-        context = {
-            'subject': subject,
-        }
+            context = {
+                'subject': subject,
+            }
 
-        return render(request, 'profile/view_profile.html', context)
+            return render(request, 'profile/view_profile.html', context)
+        except User.DoesNotExist:
+            messages.error(request, "The user you are trying to view does not exist.")
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, "An error occurred while trying to view the profile. Please try again later.")
+            return redirect('home')
 

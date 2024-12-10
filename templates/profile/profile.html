@@ -68,6 +68,19 @@
                 <div class="col-lg-9 col-md-8">{{user.userprofile.role}}</div>
               </div>
 
+              {% if user.userprofile.role.name == "Doctor" %}
+              <!-- Only displayed if the role of the user is a Doctor -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Specialty</div>
+                <div class="col-lg-9 col-md-8">{{user.userprofile.doctor.specialty}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Charge Per Hour</div>
+                <div class="col-lg-9 col-md-8">${{user.userprofile.doctor.charge_per_hour}}</div>
+              </div>
+              {% endif %}
+
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">Email</div>
                 <div class="col-lg-9 col-md-8">{{user.email}}</div>
@@ -93,7 +106,8 @@
                   </form>
 
                   <!-- Delete Profile Picture Button -->
-                  <form id="deleteProfileImageForm" method="post" action="{% url 'delete_profile_image' %}" class="pt-2">
+                  <form id="deleteProfileImageForm" method="post" action="{% url 'delete_profile_image' %}"
+                    class="pt-2">
                     {% csrf_token %}
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal">
@@ -158,6 +172,26 @@
                       required>
                   </div>
                 </div>
+
+                {% if user.userprofile.role.name == "Doctor" %}
+
+                <div class="row mb-3">
+                  <label for="specialty" class="col-md-4 col-lg-3 col-form-label">Specialty</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input type="text" class="form-control" name="specialty" id="specialty"
+                      value="{{user.userprofile.doctor.specialty}}">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="chargePerHour" class="col-md-4 col-lg-3 col-form-label">Charge Per Hour</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input type="number" class="form-control" name="charge_per_hour" id="charge_per_hour"
+                      value="{{user.userprofile.doctor.charge_per_hour}}" placeholder="Please enter the amount in dollars ($)">
+                  </div>
+                </div>
+
+                {% endif %}
 
                 <div class="text-center ">
                   <button type="submit" class="btn btn-primary">Save Changes</button>

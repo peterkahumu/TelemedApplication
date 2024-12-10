@@ -22,7 +22,7 @@ class Login(View):
         return render(request, 'authentication/login.html')
     
     def post(self, request):
-        identifier = request.POST['usernameEmail']  # username or email.
+        identifier = request.POST['usernameEmail'].strip()  # username or email.
         password = request.POST['password']
 
         context = {
@@ -67,13 +67,13 @@ class Register(View):
 
     def post(self, request):
         # Get form data
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
-        email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        role_id = request.POST.get('role')
+        username = request.POST.get('username').strip()
+        password = request.POST.get('password').strip()
+        confirm_password = request.POST.get('confirm_password').strip()
+        email = request.POST.get('email').strip()
+        first_name = request.POST.get('first_name').strip()
+        last_name = request.POST.get('last_name').strip()
+        role_id = request.POST.get('role').strip()
 
         # Collect all form field values in context
         roles = Roles.objects.all()

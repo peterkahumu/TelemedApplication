@@ -29,4 +29,4 @@ class Doctor(models.Model):
     charge_per_hour = models.DecimalField(max_digits = 15, decimal_places=2, default = 0.00)
 
     def __str__(self):
-        return "f{self.user_profile.user.username} - {self.specialty}"
+        return f"{self.user_profile.user.username} - {self.specialty}"

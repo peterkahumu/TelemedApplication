@@ -172,3 +172,15 @@ class DeleteProfileImage(LoginRequiredMixin, View):
         except Exception as e:
             messages.error(request, 'An error occurred while deleting your profile picture. Please try again later')
             return redirect(f"{reverse('profile')}#profile-edit")
+
+class ViewProfile(View):
+    def get(self, request, id):
+        # subject refers the user whose profile is being viewed
+        subject = User.objects.get(pk = id)
+
+        context = {
+            'subject': subject,
+        }
+
+        return render(request, 'profile/view_profile.html', context)
+

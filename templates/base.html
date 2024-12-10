@@ -14,7 +14,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href=" {% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -53,11 +55,12 @@
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
-        
+
         <!-- Profile nav -->
         <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'profile' %}" data-bs-toggle="dropdown">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'profile' %}"
+            data-bs-toggle="dropdown">
             <img src="{{user.userprofile.image.url}}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name.title}}</span>
           </a><!-- End Profile Iamge Icon -->
@@ -126,78 +129,44 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#consultations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-calendar-heart"></i><span>Consultations</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="consultations-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Alerts</span>
+            <a href="">
+              <i class="bi bi-person-fill-up"></i><span>Book Appointment</span>
             </a>
           </li>
+
           <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>Accordion</span>
+            <a href="">
+              <i class="bi bi-person-plus"></i><span>My appointments</span>
             </a>
           </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#vitals-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-heart-pulse"></i><span>Vitals</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="vitals-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-badges.html">
-              <i class="bi bi-circle"></i><span>Badges</span>
+            <a href="">
+              <i class="bi bi-heart-fill"></i><span>My vitals</span>
             </a>
           </li>
+
           <li>
-            <a href="components-breadcrumbs.html">
-              <i class="bi bi-circle"></i><span>Breadcrumbs</span>
+            <a href="">
+              <i class="bi bi-person-plus"></i><span>Shared Vitals</span>
             </a>
           </li>
+
           <li>
-            <a href="components-buttons.html">
-              <i class="bi bi-circle"></i><span>Buttons</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-cards.html">
-              <i class="bi bi-circle"></i><span>Cards</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-carousel.html">
-              <i class="bi bi-circle"></i><span>Carousel</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-list-group.html">
-              <i class="bi bi-circle"></i><span>List group</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-modal.html">
-              <i class="bi bi-circle"></i><span>Modal</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tabs.html">
-              <i class="bi bi-circle"></i><span>Tabs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-pagination.html">
-              <i class="bi bi-circle"></i><span>Pagination</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-progress.html">
-              <i class="bi bi-circle"></i><span>Progress</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-spinners.html">
-              <i class="bi bi-circle"></i><span>Spinners</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tooltips.html">
-              <i class="bi bi-circle"></i><span>Tooltips</span>
+            <a href="">
+              <i class="bi bi-person-plus"></i><span>Sharing</span>
             </a>
           </li>
         </ul>
@@ -207,53 +176,18 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{% url 'profile' %}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="">
           <i class="bi bi-envelope"></i>
           <span>Contact</span>
         </a>
       </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link " href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
 
     </ul>
 
@@ -270,12 +204,12 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item">{% block page_category %} {% endblock%}</li>
-          <li class="breadcrumb-item active">{% block page_title %} {% endblock %}</li> 
+          <li class="breadcrumb-item active">{% block page_title %} {% endblock %}</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    {% block content %} {% endblock %} 
+    {% block content %} {% endblock %}
 
   </main><!-- End #main -->
 

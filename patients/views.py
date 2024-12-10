@@ -10,10 +10,10 @@ class BookAppointment(LoginRequiredMixin, View):
     redirect_field_name = 'next'
 
     def get(self, request):
-
+        user = request.user
         doctors = Doctor.objects.all()   
         context = {
-            'doctors': doctors
+            'doctors': doctors,
         }
 
         return render(request, 'patients/book_appointment.html', context)

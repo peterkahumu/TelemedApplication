@@ -42,23 +42,33 @@
   
               <div class="tab-pane fade show active profile-overview" id="profile-overview">
                 <h5 class="card-title">Bio</h5>
-                <p class="small fst-italic">{{user.userprofile.bio}}</p>
+                <p class="small fst-italic">{{subject.userprofile.bio}}</p>
   
                 <h5 class="card-title">Profile Details</h5>
   
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">{{user.first_name.title}} {{user.last_name.title}}</div>
+                  <div class="col-lg-9 col-md-8">{{subject.first_name.title}} {{subject.last_name.title}}</div>
                 </div>
   
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Role</div>
-                  <div class="col-lg-9 col-md-8">{{user.userprofile.role}}</div>
+                  <div class="col-lg-9 col-md-8">{{subject.userprofile.role.name}}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Specialty</div>
+                  <div class="col-lg-9 col-md-8">{{subject.userprofile.doctor.specialty|default:"N/A"}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Charge Per Hour</div>
+                    <div class="col-lg-9 col-md-8">{{subject.userprofile.doctor.charge_per_hour|default:"N/A"}}</div>
                 </div>
   
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">{{user.email}}</div>
+                  <div class="col-lg-9 col-md-8">{{subject.email}}</div>
                 </div>
               </div>
             </div><!-- End Bordered Tabs -->

@@ -1,18 +1,19 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from authentication.models import Doctor
+from authentication.models import Doctor, UserProfile
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class BookAppointment(View):
+class BookAppointment(LoginRequiredMixin, View):
+    login_url = 'login'
+    redirect_field_name = 'next'
+
     def get(self, request):
-        try:
-            doctors = Doctor.objects.select_related('user_profile', 'user_profile__user').all()
-        except Doctor.DoesNotExist:
-             messages.error(request, 'No doctors available.')
-             redirect('home')
-        
+
+        doctors = Doctor.objects.all()   
         context = {
             'doctors': doctors
         }
-        return render(request, 'patients/book_appointment.html')
+
+        return render(request, 'patients/book_appointment.html', context)

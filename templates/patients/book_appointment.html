@@ -8,18 +8,26 @@
 {% block content %}
 <section class="section profile">
   <div class="row">
-    {% for doctor in doctors %}
-      <div class="col-md-6 col-lg-4 col-xxl-4">
-        <div class="card">
-          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-            <img src="{{ doctor.user_profile.image.url }}" alt="Profile" class="rounded-circle">
-            <h2>{{ doctor.user_profile.user.first_name|capfirst }} {{ doctor.user_profile.user.last_name|capfirst }}</h2>
-            <i><span class="text-muted">@{{ doctor.user_profile.user.username }}</span></i>
-            <h3>{{ doctor.user_profile.role.name }}</h3>
+    
+      {% for doctor in doctors %}
+      {% if doctor.userprofile.user.username  == user.username %}
+      <!-- Do Nothing at all. -->
+      {% else %}
+        <div class="col-md-6 col-lg-4 col-xxl-4">
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="{{ doctor.user_profile.image.url }}" alt="Profile" class="rounded-circle">
+              <h2>{{ doctor.user_profile.user.first_name }} {{ doctor.user_profile.user.last_name }}</h2>
+              <i><span class="text-muted">@{{ doctor.user_profile.user.username }}</span></i>
+              <h3>{{ doctor.user_profile.role.name }}</h3>
+              <p><strong>Specialty:</strong> {{ doctor.specialty|default:"No specialty available" }}</p>
+              <p><strong>Charge Per hour:</strong> {{ doctor.charge_per_hour}}</p>
+            </div>
           </div>
         </div>
-      </div>
-    {% empty %}
+      {% endif %}
+      {% empty %}
+        <p>No doctor Found</p>
       <div class="col-12">
         <div class="alert alert-info" role="alert">
           <h4 class="alert-heading">No Doctors Found</h4>
@@ -29,5 +37,6 @@
     {% endfor %}
   </div>
 </section>
+
 
 {% endblock %}

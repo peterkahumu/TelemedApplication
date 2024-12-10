@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('authenticate/', include('authentication.urls')),
     path('doctors/', include('doctors.urls')),
+    path('patients/', include('patients.urls')),
 ]
 
 # Custom 404 error page

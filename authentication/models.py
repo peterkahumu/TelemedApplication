@@ -26,6 +26,7 @@ class Doctor(models.Model):
     user_profile = models.OneToOneField(UserProfile, on_delete = models.CASCADE)
     specialty = models.CharField(max_length = 100)
     license_number = models.CharField(max_length = 100)
+    charge_per_hour = models.DecimalField(max_digits = 15, decimal_places=2, default = 0.00)
 
     def __str__(self):
         return "f{self.user_profile.user.username} - {self.specialty}"

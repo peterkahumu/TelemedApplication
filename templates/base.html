@@ -128,6 +128,35 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+      {% if user.userprofile.role.name == "Doctor" %}
+      <!-- This section is only displayed if the user is a doctor, otherwise, it is not dispayed. -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#patients-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-calendar-heart"></i><span>Patients</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="patients-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-person-fill-up"></i><span>View Consultation Reqeusts</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="">
+              <i class="bi bi-person-plus"></i><span>View Upcoming Consultations</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="">
+              <i class="bi bi-person-plus"></i><span>All Consultations</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Consultations Nav -->
+      {% endif %}
+
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#consultations-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-calendar-heart"></i><span>Consultations</span><i class="bi bi-chevron-down ms-auto"></i>

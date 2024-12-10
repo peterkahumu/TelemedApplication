@@ -10,5 +10,5 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ['user_profile', 'specialty', 'license_number']
+    list_display = ['user_profile', 'specialty', 'license_number', 'charge_per_hour']
     list_filter  = ['specialty']

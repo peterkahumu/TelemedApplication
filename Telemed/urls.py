@@ -22,8 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('authenticate/', include('authentication.urls')),
+    path('doctors/', include('doctors.urls')),
 ]
 
+# Custom 404 error page
 def custom_404(request, exception):
     return render('request', '404_error.html', status = 404)
 

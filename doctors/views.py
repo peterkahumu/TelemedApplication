@@ -24,7 +24,7 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
         user = request.user
 
         if not self.is_doctor(user):
-            messages.warning(request, "Unauthorized access request denied.")
+            messages.error(request, "Unauthorized access. Request denied.")
             return redirect('home')
         
         user_profile = UserProfile.objects.get(user=user)
@@ -39,7 +39,7 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
         available_from = request.POST['available_from']
         availabe_to = request.POST['available_to']
         
-        if not float(charge_per_hour):
+        if not float(charge_per_hour).is_integer():
             messages.warning(request, 'The charge per hour must be a number.')
             return self.redirect_profile()
         

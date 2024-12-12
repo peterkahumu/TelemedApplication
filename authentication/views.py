@@ -15,6 +15,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.core.mail import EmailMessage
 import threading
+from django.contrib.auth.models import Group
 
 # Create your views here.
 class Login(View):
@@ -157,6 +158,9 @@ class Register(View):
             # Create doctor if the role is Doctor
             if role.name == "Doctor":
                 Doctor.objects.create(user_profile=user_profile, specialty=specialty, license_number=license_number)
+                # add the use to doctors group
+                group = Group.objects.get(name = "doctors")
+                user.groups.add(group)
 
             # Send activation email
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))

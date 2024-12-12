@@ -14,7 +14,7 @@
     {% if user.id != doctor.user_profile.user.id  and doctor.user_profile.user.is_active %}
     <div class="col-md-6 col-lg-4 col-xxl-4">
       <div class="card">
-        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        <div class="card-body profile-card pt-2 d-flex flex-column align-items-center">
           <img src="{{ doctor.user_profile.image.url }}" alt="Profile" class="rounded-circle">
           <h2>{{ doctor.user_profile.user.first_name }} {{ doctor.user_profile.user.last_name }}</h2>
           <a href="{% url 'view_profile' doctor.user_profile.user.username %}"><i><span
@@ -97,8 +97,5 @@
 
     </div>
   </div>
-
 </section>
-
-
 {% endblock %}

@@ -4,18 +4,16 @@ from authentication.models import User, UserProfile, Doctor
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.contrib.auth.models import Group
+
 # Create your views here.
 class UpdateDoctorInfo(View, LoginRequiredMixin):
     login_url = 'login'
     redirect_field_name = 'next'
 
-    def get(self, request):
-        user = request.user
-        if not user.userprofile.role.name == "Doctor": # ensure the user is a Doctor.
-            messages.warning(request, "Unauthorized access request denied.")
-            return redirect('home')
-        
-        return redirect('profile')
+    def is_doctor(self, user):
+        """Check if the user is a doctor."""
+        return user.groups.filter(name = "doctors").exists()
     
     def redirect_profile(self):
          """Redirect the doctor to the update information form."""
@@ -24,6 +22,11 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
     def post(self, request):
         # check if user is a doctor
         user = request.user
+
+        if not self.is_doctor(user):
+            messages.warning(request, "Unauthorized access request denied.")
+            return redirect('home')
+        
         user_profile = UserProfile.objects.get(user=user)
         doctor = Doctor.objects.get(user_profile = user_profile)
 

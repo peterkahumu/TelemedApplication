@@ -74,7 +74,7 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Available Time</div>
-                    <div class="col-lg-9 col-md-8">{{subject.userprofile.doctor.available_from}} - {{subject.userprofile.doctor.available_to}}</div>
+                    <div class="col-lg-9 col-md-8">{{subject.userprofile.doctor.available_from|date:"H:i"}} - {{subject.userprofile.doctor.available_to|date:"H:i"}}</div>
                 </div>
                 {% endif %}
                 <div class="row">

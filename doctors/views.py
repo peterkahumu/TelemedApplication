@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import Group
+import datetime
 
 # Create your views here.
 class UpdateDoctorInfo(View, LoginRequiredMixin):
@@ -59,6 +60,19 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
         
         if not specialty:
             messages.warning(request, 'Please provide your specialty.')
+            return self.redirect_profile()
+        
+        # convert availabe to and from to time
+        try:
+            available_from = datetime.datetime.strptime(available_from, '%H:%M').time()
+            availabe_to = datetime.datetime.strptime(availabe_to, '%H:%M').time()
+        except Exception as e:
+            messages.error(request, "An error occured while converting the time, please provide the time in the format HH:MM, using 24 hour format.")
+            return self.redirect_profile()
+        
+        # ensure the available from is earlier than the available to
+        if not available_from < availabe_to:
+            messages.error(request, "The available from time must be earlier than the available to time.")
             return self.redirect_profile()
         
         if doctor.specialty == specialty and doctor.charge_per_hour == float(charge_per_hour) and doctor.available_days == available_days and doctor.available_from == available_from and doctor.available_to == availabe_to:

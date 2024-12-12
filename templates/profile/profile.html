@@ -94,8 +94,8 @@
 
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">Available Time</div>
-                <div class="col-lg-9 col-md-8">{{user.userprofile.doctor.available_from}} -
-                  {{user.userprofile.doctor.available_to}}</div>
+                <div class="col-lg-9 col-md-8">{{user.userprofile.doctor.available_from|date:"H:i"}} -
+                  {{user.userprofile.doctor.available_to|date:"H:i"}}</div>
               </div>
               {% endif %}
 
@@ -230,16 +230,16 @@
                 <div class="row mb-3">
                   <label for="availableFrom" class="col-md-4 col-lg-3 col-form-label">Available From</label>
                   <div class="col-md-8 col-lg-9">
-                    <input type="time" class="form-control" name="available_from" id="available_from"
-                      value="{{user.userprofile.doctor.available_from}}" required>
+                    <input type="text" class="form-control" name="available_from" id="available_from"
+                      value="{{user.userprofile.doctor.available_from|date:'H:i'}}" placeholder="HH:MM" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="availableTo" class="col-md-4 col-lg-3 col-form-label">Available To</label>
                   <div class="col-md-8 col-lg-9">
-                    <input type="time" class="form-control" name="available_to" id="available_to"
-                      value="{{user.userprofile.doctor.available_to}}" required>
+                    <input type="text" class="form-control" name="available_to" id="available_to"
+                      value="{{user.userprofile.doctor.available_to|date:'H:i'}}" placeholder="HH:MM" required>
                   </div>
                 </div>
 

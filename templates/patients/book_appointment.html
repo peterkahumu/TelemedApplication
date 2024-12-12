@@ -22,7 +22,7 @@
           <p><strong>Specialty:</strong> {{ doctor.specialty|default:"No specialty available" }}</p>
           <p><strong>Charge Per hour:</strong> {{ doctor.charge_per_hour}}</p>
           <p class="text-muted"> <strong>Available Days: </strong> {{doctor.available_days}} </p>
-          <p class="text-muted"> <strong>Available Time: </strong> {{doctor.available_from}} - {{doctor.available_to}}
+          <p class="text-muted"> <strong>Available Time: </strong> {{doctor.available_from|date:"H:i"}} - {{doctor.available_to|date:"H:i"}}
           </p>
           <div class="row">
             <div class="col-6">

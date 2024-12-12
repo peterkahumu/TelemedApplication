@@ -3,6 +3,7 @@ from django.views import View
 from authentication.models import Doctor, UserProfile
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 # Create your views here.
 class BookAppointment(LoginRequiredMixin, View):
@@ -11,9 +12,15 @@ class BookAppointment(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        doctors = Doctor.objects.all()   
+        doctors = Doctor.objects.all() 
+
+        paginator = Paginator(doctors, 6)
+        page_number = request.GET.get('page')
+        page_obj = Paginator.get_page(paginator, page_number)
+
         context = {
             'doctors': doctors,
+            'page_obj': page_obj
         }
 
         return render(request, 'patients/book_appointment.html', context)

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f730cc3a-22b2-44be-910a-07a16651a89b/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Telemed-Application",
+    "appService.deploySubpath": "."
+}

@@ -28,8 +28,12 @@ class UpdateProfileImage(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    def redirect_profile(self):
+        """Redirects user to the profile edit section."""
         return redirect(f"{reverse('profile')}#profile-edit")
+    
+    def get(self, request):
+        return self.redirect_profile()
 
     def post(self, request):
         try:            
@@ -37,7 +41,7 @@ class UpdateProfileImage(LoginRequiredMixin, View):
 
             if 'profile_picture' not in request.FILES or not request.FILES['profile_picture']:
                 messages.error(request, 'You did not provide a profile picture. Please choose a file to upload.')
-                return redirect(f"{reverse('profile')}#profile-edit") # redirect to the profile page with the edit section open.
+                return self.redirect_profile()
                 
             image = request.FILES['profile_picture']
 
@@ -47,25 +51,26 @@ class UpdateProfileImage(LoginRequiredMixin, View):
             profile.image = image        
             profile.save()
             messages.success(request, 'Profile picture updated successfully')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return redirect('profile')
         
         # cant find the user profile
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return self.redirect_profile()
         
         except Exception as e:
             messages.error(request, 'An error occurred while updating your profile picture. Please try again later')
-            return redirect(f"{reverse('profile')}#profile-edit") 
+            return self.redirect_profile() 
 
 class UpdateProfileInfo(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
 
     def get(self, request):
-        return redirect(f"{reverse('profile')}#profile-edit")
+        return self.redirect_profile()
     
-    def redirect_profile(self): # Redirects user to the profile edit section.
+    def redirect_profile(self): 
+        """Redirects user to the profile edit section."""
         return redirect(f"{reverse('profile')}#profile-edit")
     
     def post(self, request):
@@ -108,8 +113,8 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
             user_profile.save()
 
             messages.success(request, 'Profile updated successfully')
-            return self.redirect_profile()
-                   
+            return redirect('profile') # Return the use  to their profile.
+
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try again later.')
             return self.redirect_profile()
@@ -121,10 +126,13 @@ class UpdatePassword(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    def redirect_profile(self):
+        """Redirects user to the password edit section."""
         return redirect(f"{reverse('profile')}#password-edit")
     
-    
+    def get(self, request):
+        return self.redirect_profile()
+     
     def post(self, request):
         try:
             user = request.user
@@ -134,38 +142,42 @@ class UpdatePassword(LoginRequiredMixin, View):
 
             if not current_password or not new_password or not confirm_password:
                 messages.error(request, 'Please fill in all the fields.')
-                return redirect(f"{reverse('profile')}#password-edit")
+                return self.redirect_profile()
 
             if not user.check_password(current_password):
                 messages.error(request, 'The old password you provided is incorrect.')
-                return redirect(f"{reverse('profile')}#password-edit")
+                return self.redirect_profile()
             
             if new_password != confirm_password:
                 messages.error(request, 'The new password and confirm password do not match.')
-                return redirect(f"{reverse('profile')}#password-edit")
+                return self.redirect_profile()
 
             if new_password == current_password:
                 messages.error(request, 'The new password cannot be the same as the old password.')
-                return redirect(f"{reverse('profile')}#password-edit")
+                return self.redirect_profile()
 
             if len(new_password) < 6:
                 messages.error(request, 'The new password must be at least 6 characters long.')
-                return redirect(f"{reverse('profile')}#password-edit")
+                return self.redirect_profile()
             
             user.set_password(new_password)
             user.save()
             messages.success(request, 'Password updated successfully')
-            return redirect(f"profile")
+            return redirect("profile")
         except Exception as e:
             messages.error(request, 'An error occurred while updating your password. Please try again later')
-            return redirect(f"{reverse('profile')}#password-edit")
+            return self.redirect_profile()
 
 class DeleteProfileImage(LoginRequiredMixin, View):
     login_url = 'login'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    def redirect_profile(self):
+        """Redirects user to the profile edit section."""
         return redirect(f"{reverse('profile')}#profile-edit")
+    
+    def get(self, request):
+        return self.redirect_profile()
 
     def post(self, request):
         try: 
@@ -173,7 +185,7 @@ class DeleteProfileImage(LoginRequiredMixin, View):
 
             if profile.image.name == profile.image.field.default:
                 messages.error(request, "You don't have a profile picture to delete.")
-                return redirect(f"{reverse('profile')}#profile-edit")
+                return self.redirect_profile()
             
             profile.image.delete()
             # set the image to the default image
@@ -181,19 +193,20 @@ class DeleteProfileImage(LoginRequiredMixin, View):
             profile.save()
             
             messages.success(request, 'Profile picture deleted successfully')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return redirect('profile')
+        
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try again later.')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return self.redirect_profile()
         except Exception as e:
             messages.error(request, 'An error occurred while deleting your profile picture. Please try again later')
-            return redirect(f"{reverse('profile')}#profile-edit")
+            return self.redirect_profile()
 
 class ViewProfile(View):
-    def get(self, request, id):
+    def get(self, request, username):
         try:
             # subject refers the user whose profile is being viewed
-            subject = User.objects.get(pk = id)
+            subject = User.objects.get(username = username)
 
             context = {
                 'subject': subject,
@@ -205,5 +218,5 @@ class ViewProfile(View):
             return redirect('home')
         except Exception as e:
             messages.error(request, "An error occurred while trying to view the profile. Please try again later.")
-            return redirect('home')
+            return redirect('book_appointment')
 

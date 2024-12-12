@@ -11,6 +11,6 @@ urlpatterns = [
     path('update-profile-info/', UpdateProfileInfo.as_view(), name = 'update_profile_info'),
     path('update-password/', UpdatePassword.as_view(), name = 'update_password'),
     path('delete-profile-image/', DeleteProfileImage.as_view(), name = 'delete_profile_image'),
-    path('view_profile/<int:id>/', ViewProfile.as_view(), name = 'view_profile'),
+    path('view_profile/<username>/', ViewProfile.as_view(), name = 'view_profile'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

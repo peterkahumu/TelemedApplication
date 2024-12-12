@@ -27,6 +27,9 @@ class Doctor(models.Model):
     specialty = models.CharField(max_length = 100)
     license_number = models.CharField(max_length = 100)
     charge_per_hour = models.DecimalField(max_digits = 15, decimal_places=2, default = 0.00)
+    available_days = models.CharField(max_length = 100, default = "Monday - Friday")
+    available_from = models.TimeField(default='08:00:00')
+    available_to = models.TimeField(default='17:00:00')
 
     def __str__(self):
         return f"{self.user_profile.user.username} - {self.specialty}"

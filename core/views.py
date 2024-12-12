@@ -77,24 +77,22 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             username = request.POST['username']
-
-            if user.userprofile.role.name == "Doctor":
-                specialty = request.POST['specialty']
-                charge_per_hour = request.POST['charge_per_hour']
-
-                if not float(charge_per_hour):
-                    messages.warning(request, 'The charge per hour must be a number.')
-                    return self.redirect_profile()
                 
-            # role base validation
-            if user.userprofile.role.name == "Doctor": # if the user is a doctor
-                if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio and specialty == user.userprofile.doctor.specialty and charge_per_hour == user.userprofile.doctor.charge_per_hour:
-                    messages.info(request, 'No changes were made to your profile.')
-                    return self.redirect_profile()
-            else:
-                if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio:
-                    messages.info(request, 'No changes were made to your profile.')
-                    return self.redirect_profile()  
+            if not first_name:
+                messages.warning(request, 'Please provide your first name.')
+                return self.redirect_profile()
+            
+            if not last_name:
+                messages.warning(request, 'Please provide your last name.')
+                return self.redirect_profile()
+            
+            if not username:
+                messages.warning(request, 'Please provide your username.')
+                return self.redirect_profile()
+                
+            if username == user.username and first_name == user.first_name and last_name == user.last_name and updated_bio == user_profile.bio:
+                messages.info(request, 'No changes were made to your profile.')
+                return self.redirect_profile()  
             
             if username != user.username and User.objects.filter(username = username).exists():
                 messages.error(request, 'The username you provided is already taken. Please choose another one.')
@@ -109,16 +107,9 @@ class UpdateProfileInfo(LoginRequiredMixin, View):
             user.save()
             user_profile.save()
 
-            if user.userprofile.role.name == "Doctor":
-                doctor = Doctor.objects.get(user_profile = user_profile)
-                doctor.specialty = specialty
-                doctor.charge_per_hour = charge_per_hour
-                doctor.save()
-
             messages.success(request, 'Profile updated successfully')
             return self.redirect_profile()
-        
-            
+                   
         except UserProfile.DoesNotExist:
             messages.error(request, 'Trouble associating you with a profile. Please try again later.')
             return self.redirect_profile()

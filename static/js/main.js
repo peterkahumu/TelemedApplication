@@ -1,18 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Check if there is a hash in the URL
-    const hash = window.location.hash;
 
-    // If the hash corresponds to a tab, activate it
+  /** This event listener checks if there is an id provided in the link, and if one is provided, takes the user direct to it, rather than at the beggining of the page. Mostly works when updating the user information and redirects the user directly to the assocciated id.
+   * 
+   * Check the core/view.py file for more information, since this is where profile updates is done.
+   */
+    
+    const hash = window.location.hash;
     if (hash) {
       const tabButton = document.querySelector(`[data-bs-target="${hash}"]`);
       const tabContent = document.querySelector(hash);
 
       if (tabButton && tabContent) {
-        // Deactivate any currently active tabs
         document.querySelectorAll('.nav-link.active').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-pane.active').forEach(tab => tab.classList.remove('show', 'active'));
 
-        // Activate the new tab
         tabButton.classList.add('active');
         tabContent.classList.add('show', 'active');
       }
@@ -20,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // display of the toast (messages.)
-
   document.addEventListener('DOMContentLoaded', function () {
     const toastElList = [].slice.call(document.querySelectorAll('.toast'));
     const toastList = toastElList.map(function (toastEl) {
@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     toastList.forEach(toast => toast.show()); 
 });
+
+
 
 (function() {
   "use strict";

@@ -11,7 +11,7 @@
     <!-- Doctors -->
     {% for doctor in page_obj %}
     <!-- Avoid displaying own profile if current user is a doctor -->
-    {% if user.id != doctor.user_profile.user.id  and doctor.user_profile.user.is_active %}
+    {% if user.id != doctor.user_profile.user.id and doctor.user_profile.user.is_active %}
     <div class="col-md-6 col-lg-4 col-xxl-4">
       <div class="card">
         <div class="card-body profile-card pt-2 d-flex flex-column align-items-center">
@@ -22,7 +22,8 @@
           <p><strong>Specialty:</strong> {{ doctor.specialty|default:"No specialty available" }}</p>
           <p><strong>Charge Per hour:</strong> {{ doctor.charge_per_hour}}</p>
           <p class="text-muted"> <strong>Available Days: </strong> {{doctor.available_days}} </p>
-          <p class="text-muted"> <strong>Available Time: </strong> {{doctor.available_from|date:"H:i"}} - {{doctor.available_to|date:"H:i"}}
+          <p class="text-muted"> <strong>Available Time: </strong> {{doctor.available_from|date:"H:i"}} -
+            {{doctor.available_to|date:"H:i"}}
           </p>
           <div class="row">
             <div class="col-6">
@@ -30,7 +31,8 @@
                 Profile</a>
             </div>
             <div class="col-6">
-              <a class="btn btn-warning" href="">Request Services</a>
+              <button type="button" class="btn btn-primary mx-auto" data-bs-toggle="modal"
+                data-bs-target="#requestServicesModal" data-doctor-id="{{ doctor.id }}">Request Services</button>
             </div>
           </div>
         </div>
@@ -47,6 +49,48 @@
     </div>
     {% endfor %}
   </div> <!-- End Doctors Display row -->
+
+  <!-- Hidden form that appears when the user clicks request services button-->
+  <div class="modal fade" id="requestServicesModal" tabindex="-1" aria-labelledby="requestServicesModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestServicesModalLabel">Request Services</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'book_appointment' %}" method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="appointment_reason" class="form-label">Reason for Appointment</label>
+              <textarea class="form-control" id="appointment_reason" name="appointment_reason" rows="3"
+                required></textarea>
+              <div class="invalid-feedback">Please enter a reason for the appointment!!</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="appointment_date">Appointment Date</label>
+              <input type="date" class="form-control" id="appointment_date" name="appointment_date" placeholder="MM/DD/YYYY" required>
+              <div class="invalid-feedback">Please enter the date of the Appointment !!</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="appointment_time">Appointment Time</label>
+              <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
+              <div class="invalid-feedback">Please enter the time of the Appointment !!</div>
+            </div>
+
+            <input type="hidden" class="form-control" id="doctor_id" name="doctor_id" required>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Pagination -->
   <div class="row">
@@ -98,4 +142,8 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/book_appointment.js' %}"></script>
 {% endblock %}

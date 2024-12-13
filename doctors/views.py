@@ -34,6 +34,7 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
         if not user.userprofile.role.name == "Doctor": # ensure the user is a Doctor.
             messages.warning(request, "Unauthorized access request denied.")
             return redirect('home')
+        
         specialty = request.POST['specialty']
         charge_per_hour = request.POST['charge_per_hour']
         available_days = request.POST['available_days']

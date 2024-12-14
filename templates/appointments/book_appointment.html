@@ -60,25 +60,26 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{% url 'book_appointment' %}" method="POST" class="needs-validation" novalidate>
+          <form action="{% url 'book_appointment' %}" method="post" class="needs-validation" novalidate>
             {% csrf_token %}
 
             <div class="mb-3">
               <label for="appointment_reason" class="form-label">Reason for Appointment</label>
-              <textarea class="form-control" id="appointment_reason" name="appointment_reason" rows="3"
-                required></textarea>
+              <textarea class="form-control" id="appointment_reason" name="appointment_reason" rows="3" required>{{values.appointment_reason}}</textarea>
               <div class="invalid-feedback">Please enter a reason for the appointment!!</div>
             </div>
 
             <div class="mb-3">
               <label for="appointment_date">Appointment Date</label>
-              <input type="date" class="form-control" id="appointment_date" name="appointment_date" placeholder="MM/DD/YYYY" required>
+              <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="{{values.appointment_date}}"
+                placeholder="MM/DD/YYYY" required>
               <div class="invalid-feedback">Please enter the date of the Appointment !!</div>
             </div>
 
             <div class="mb-3">
-              <label for="appointment_time">Appointment Time</label>
-              <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
+              <label for="appointment_time">Appointment Time (Please use 24hr system, HH:MM)</label>
+              <input type="text" class="form-control" id="appointment_time" name="appointment_time" value="{{values.appointment_time}}" placeholder="HH:MM"
+                required>
               <div class="invalid-feedback">Please enter the time of the Appointment !!</div>
             </div>
 

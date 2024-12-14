@@ -3,7 +3,8 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
-# create your urls here
 urlpatterns = [
+
+    path('book_appointment/', BookAppointment.as_view(), name = 'book_appointment'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

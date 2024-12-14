@@ -113,11 +113,12 @@
                 <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                 <div class="col-md-8 col-lg-9">
                   <img src="{{user.userprofile.image.url}}" alt="Profile">
-                  <form method="post" action="{% url 'update_profile_image' %}" enctype="multipart/form-data">
+                  <form method="post" class="needs-validation" action="{% url 'update_profile_image' %}" enctype="multipart/form-data" novalidate>
                     <!-- Form to update the user profile photo. -->
                     {% csrf_token %}
-                    <div class="pt-2">
+                    <div class="pt-2 has-validation">
                       <input type="file" name="profile_picture" id="profile_picture" class="form-control mb-2" required>
+                      <div class="invalid-feedback">Oops!! Seems you forgot to upload an image.</div>
                       <button type="submit" class="btn btn-primary" title="Upload"><i class="bi bi-upload"></i>
                         Upload</button>
                     </div>

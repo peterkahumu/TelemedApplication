@@ -87,7 +87,7 @@ class BookAppointment(LoginRequiredMixin, View):
             appointment = Appointment(user=user, doctor=doctor, date=appointment_date, time=appointment_time, reason=appointment_reason, status='Pending')
             appointment.save()
             messages.success(request, 'Appointment booked successfully')
-            return redirect('book_appointment')
+            return redirect('patient_appointments')
         except:
             messages.error(request, "Error occurred while booking the appointment.")
             return self.return_with_context(request, context)

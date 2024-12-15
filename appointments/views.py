@@ -76,6 +76,8 @@ class BookAppointment(LoginRequiredMixin, View):
         
         try: 
             doctor = Doctor.objects.get(id=doctor_id)
+            start_time = doctor.available_from
+            end_time = doctor.available_to # Doctors available time.
         except Doctor.DoesNotExist:
             messages.error(request, 'Doctor does not exist')
             return self.return_with_context(request, context)
@@ -84,6 +86,10 @@ class BookAppointment(LoginRequiredMixin, View):
             return self.return_with_context(request, context)
                                                     
         try:
+            if appointment_time < start_time or appointment_time > end_time:
+                messages.error(request, f"Doctor {doctor.user_profile.user.first_name} is only available from {start_time} to {end_time}. Please select a time within the range or try another doctor.")
+                return self.return_with_context(request, context)
+            
             appointment = Appointment(user=user, doctor=doctor, date=appointment_date, time=appointment_time, reason=appointment_reason, status='Pending')
             appointment.save()
             messages.success(request, 'Appointment booked successfully')

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Edit Appointment {% endblock %}
+{% block page_category %} Appointments {% endblock %}
+{% block page_title %} Edit Appointment {% endblock %}
+{% block content %}
+<div class="card">
+
+    <div class="card-body">
+
+        <div class="pt-3 pb-3">
+            <h5 class="card-title text-center pb-0 fs-4">Edit Appointment</h5>
+        </div>
+
+        <form class="row g-3 needs-validation" novalidate action="{% url 'edit_appointment' appointment.id %}" method="post">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label for="appointment_date" class="form_laber">Appointment Date</label>
+                <input type="date" name="appointment_date" id="appointment_date" class="form-control" value="{{appointment.date|date:'Y-m-d'}}" required>
+                <div class="invalid-feedback" id="date-invalid">Please enter a Date</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="appointment_time" class="form-label">Appointment time</label>
+                <input type="time" name="appointment_time" class="form-control" id="appointment_time" value="{{appointment.time|date:'H:i'}}" required>
+                <div class="invalid-feedback" id="time-invalid">Please enter the time</div>
+            </div>
+
+            <div class="col-md-12">
+                <label for="reason" class="form-label">Reason</label>
+                <textarea name="appointment_reason" id="appointment_reason" class="form-control" col="4">{{appointment.reason}}</textarea>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary w-100" name="submit" id="submit" type="submit">Update Info</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

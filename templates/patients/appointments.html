@@ -38,8 +38,7 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="" class="mt-2 btn btn-primary btn-sm">View</a>
-                                        <a href="" class="mt-2 btn btn-warning btn-sm">Edit</a>
+                                        <a href="{% url 'edit_appointment' appointment.id %}" class="mt-2 btn btn-primary btn-sm">Edit</a>
                                         <a href="" class="mt-2 btn btn-danger btn-sm">Cancel</a>
                                     </td>
                                 </tr>

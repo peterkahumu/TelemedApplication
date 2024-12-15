@@ -55,7 +55,7 @@ class Login(View):
         
         try:
             login(request, user)
-            messages.success(request, f'Welcome back, {user.username}')
+            messages.success(request, f'Welcome back, {user.first_name.title()}')
             return redirect('home')
         except Exception as e:
             messages.error(request, 'An error occurred while logging in. Please try again, ', e)

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from authentication.models import User, UserProfile, Doctor
+from appointments.models import Appointment
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
@@ -94,7 +95,18 @@ class UpdateDoctorInfo(View, LoginRequiredMixin):
             messages.error(request, f"An error occured while updating your information, {e}")
             return self.redirect_profile()
 
-        
+class AppointmentRequest(LoginRequiredMixin, View):
+    login_url = 'login'
+    redirect_field_name = 'next'
 
-        
+    def get(self, request):
+        user = request.user
+        doctor = Doctor.objects.get(user_profile = user.userprofile)
+        appointment = Appointment.objects.filter(doctor = doctor)
+        context = {
+            "appointment": appointment
+        }
+
+        return render(request, 'doctors/requested_appointments.html', context)
+                
         

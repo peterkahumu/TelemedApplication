@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import Group
+from django.core.paginator import Paginator
 import datetime
 
 # Create your views here.
@@ -102,9 +103,16 @@ class AppointmentRequest(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         doctor = Doctor.objects.get(user_profile = user.userprofile)
-        appointment = Appointment.objects.filter(doctor = doctor)
+        appointments = Appointment.objects.filter(doctor = doctor)
+
+        paginator = Paginator(appointments, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+
         context = {
-            "appointment": appointment
+            "appointments": appointments,
+            "page_obj": page_obj
         }
 
         return render(request, 'doctors/requested_appointments.html', context)

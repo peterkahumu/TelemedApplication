@@ -47,7 +47,7 @@ class EditAppointment(LoginRequiredMixin, View):
     
     def post(self, request, id):
         try:
-            appointment = Appointment.objects.get(id = id)
+            appointment = Appointment.objects.get(id = id) # get the specific appoinment
         except Appointment.DoesNotExist:
             messages.error(request, "Appointment not found")
             return redirect("patient_appointments")

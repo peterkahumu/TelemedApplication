@@ -827,20 +827,21 @@ h6 {
   background: #ffecdf;
 }
 
-/* Activity */
-.dashboard .activity {
+/* appointment */
+.dashboard .appointment {
   font-size: 14px;
 }
 
-.dashboard .activity .activity-item .activite-label {
+.dashboard .appointment .appointment-item .appointment-label {
   color: #888;
   position: relative;
   flex-shrink: 0;
   flex-grow: 0;
   min-width: 64px;
+  text-wrap: wrap;
 }
 
-.dashboard .activity .activity-item .activite-label::before {
+.dashboard .appointment .appointment-item .appointment-label::before {
   content: "";
   position: absolute;
   right: -11px;
@@ -850,7 +851,7 @@ h6 {
   background-color: #eceefe;
 }
 
-.dashboard .activity .activity-item .activity-badge {
+.dashboard .appointment .appointment-item .appointment-badge {
   margin-top: 3px;
   z-index: 1;
   font-size: 11px;
@@ -861,16 +862,16 @@ h6 {
   flex-grow: 0;
 }
 
-.dashboard .activity .activity-item .activity-content {
+.dashboard .appointment .appointment-item .appointment-content {
   padding-left: 10px;
   padding-bottom: 20px;
 }
 
-.dashboard .activity .activity-item:first-child .activite-label::before {
+.dashboard .appointment .appointment-item:first-child .appointment-label::before {
   top: 5px;
 }
 
-.dashboard .activity .activity-item:last-child .activity-content {
+.dashboard .appointment .appointment-item:last-child .appointment-content {
   padding-bottom: 0;
 }
 

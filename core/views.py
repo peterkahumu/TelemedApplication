@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.models import UserProfile, User, Doctor
 from django.contrib import messages
 from django.urls import reverse
+from appointments.models import Appointment
+import datetime
 
 # Create your views here.
 class Index(View):
@@ -15,7 +17,30 @@ class Home(LoginRequiredMixin, View):
     redirect_field_name = 'next'
     
     def get(self, request):
-        return render(request, 'core/home.html')
+        # get the upcoming appointment for the user (only 1) if any
+        try:
+            user = request.user
+            appointment = Appointment.objects.filter(user = user).order_by('date').first()
+            
+            if appointment:
+                # calculate the time remaining to the appointment
+                current_datetime = datetime.datetime.now()
+                appointment_datetime = datetime.datetime.combine(appointment.date, appointment.time)
+                time_remaining = appointment_datetime - current_datetime
+                days_remaining = time_remaining.days
+                hours_remaining = time_remaining.seconds // 3600
+
+                appointment.days_remaining = days_remaining
+                appointment.hours_remaining = hours_remaining
+
+            context = {
+                'appointment': appointment,
+            }
+            return render(request, 'core/home.html', context)
+        except Exception as e:
+            messages.error(request, 'An error occurred while trying to get your upcoming appointment. Please try again later.')
+        
+        return render(request, 'core/home.html', context)
 
 class Profile(LoginRequiredMixin, View):
     login_url = 'login'

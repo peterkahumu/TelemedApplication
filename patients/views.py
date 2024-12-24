@@ -14,7 +14,7 @@ class PatientAppointments(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        appointments = Appointment.objects.filter(user = user)
+        appointments = Appointment.objects.filter(user = user).order_by('date', 'time')
 
         paginator = Paginator(appointments, 10)
         page_number = request.GET.get('page')

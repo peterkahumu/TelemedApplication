@@ -812,19 +812,24 @@ h6 {
   flex-grow: 0;
 }
 
-.dashboard .sales-card .card-icon {
+.dashboard .bp-card .card-icon {
   color: #4154f1;
   background: #f6f6fe;
 }
 
-.dashboard .revenue-card .card-icon {
+.dashboard .wallet-card .card-icon {
   color: #2eca6a;
   background: #e0f8e9;
 }
 
-.dashboard .customers-card .card-icon {
-  color: #ff771d;
-  background: #ffecdf;
+.dashboard .heartrate-card .card-icon {
+  color: #4154f1;
+  background: #f6f6ff;
+}
+
+.dashboard .pulsepressure-card .card-icon {
+  color: #4154f1;
+  background: #f6f6ff;
 }
 
 /* appointment */

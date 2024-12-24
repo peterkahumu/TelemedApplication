@@ -63,7 +63,7 @@
                 <div class="card info-card pulsepressure-card">
 
                     <div class="card-body">
-                        <h5 class="card-title">Pulse Pressure <span>| Systolic - Diastolic Pressure</span></h5>
+                        <h5 class="card-title">Pulse Pressure</h5>
 
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -347,40 +347,61 @@
         <div class="col-lg-4">
 
             <!-- Upcoming Appointment -->
-            <div class="card">  
-              <div class="card-body">
-                <h5 class="card-title">Upcoming Appointment<span></span></h5>
-  
-                <div class="appointment">
-                    {% if appointment %}
-                  <div class="appointment-item d-flex">
-                    <div class="appointment-label">{{appointment.date|date:"Y-m-d"}}</div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Appointment<span></span></h5>
 
-                    <i class='bi bi-circle-fill appointment-badge text-success align-self-start'></i>
-                    <div class="appointment-content">
-                        <h6><span class="text-dark fw-bold">Time:</span> {{appointment.time}}</h6>
-                        <h6><span class="text-dark fw-bold">Doctor: Dr </span>{{appointment.doctor.user_profile.user.first_name.title}} {{appointment.doctor.user_profile.user.last_name.title}}</h6>   
-                        <p class="text-muted text-sm">{{appointment.days_remaining}} days {{appointment.hours_remaining}} hours remaining to appointment</p>
+                    <div class="appointment">
+                        {% if appointment %}
+                        <div class="appointment-item d-flex">
+                            <div class="appointment-label">{{appointment.date|date:"Y-m-d"}}</div>
 
+                            <i class='bi bi-circle-fill appointment-badge text-success align-self-start'></i>
+                            <div class="appointment-content">
+                                <h6><span class="text-dark fw-bold">Time:</span> {{appointment.time}}</h6>
+                                <h6><span class="text-dark fw-bold">Doctor: Dr
+                                    </span>{{appointment.doctor.user_profile.user.first_name.title}}</h6>
+                                <p class="text-muted text-sm">{{appointment.days_remaining}} days
+                                    {{appointment.hours_remaining}} hours remaining to appointment</p>
+
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="appointment-item d-flex">
+                            <div class="text-danger fw-bold">No Appointments found.</div>
+                        </div>
+                        {% endif %}<!-- End appointment item-->
                     </div>
-                  </div>
-                  {% else %}
-                  <div class="appointment-item d-flex">
-                    <div class="text-danger fw-bold">No Appointments found.</div>
-                  </div>
-                {% endif %}
-                  
-
-                  <!-- End appointment item-->
-  
-                  
                 </div>
-  
-              </div>
-            </div><!-- End Recent appointment -->
-  
+            </div><!-- End upcoming appointment -->
+
+            <!-- Upcoming Medication -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Medication<span></span></h5>
+
+                    <div class="appointment">
+                        <p class="text-muted fw-bold text-success">Coming Soon</p>
+                    </div>
+                </div>
+            </div><!-- End upcoming Medication -->
+
+            <div class="card wallet-card info-card">
+                <div class="card-body">
+                    <h5 class="card-title">Wallet Balance</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>$3,264</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
-
-
 
 {% endblock %}

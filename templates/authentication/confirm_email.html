@@ -1,0 +1,34 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="card">
+
+    <div class="card-body">
+
+        <div class="pt-3 pb-3">
+            <h5 class="card-title text-center pb-0 fs-4">Activate your account.</h5>
+            <p>An email was sent to {{email}}. Please click the link to activate the account.</p>
+        </div>
+
+        <form class="row g-3 needs-validation" novalidate action="{% url 'confirm-email' %}" method="post">
+            {% csrf_token %}
+            <p>Didn't get the email? Just enter it below and hit resend.</p>
+            <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group has-validation">
+                    <input type="email" name="email" class="form-control" id="email" value="{{email}}" required>
+                    <div class="invalid-feedback" id="email-invalid">Please choose a email.</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary w-100" name="submit" id="submit" type="submit">Resend Email</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+

@@ -101,16 +101,29 @@ class Register(View):
             messages.error(request, 'Username must contain letters and numbers only.')
             return render(request, 'authentication/register.html', context)
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username taken. Choose another.')
-            return render(request, 'authentication/register.html', context)
+            user = User.objects.get(username=username)
+            
+            if user.is_active:
+                messages.error(request, 'Email already exists. Please log in instead.')
+                return redirect('login')
+            else:
+                messages.error(request, "Account exists but is inactive. Please activate the account first.")
+                request.session['email'] = user.email
+                return redirect('confirm-email')
 
         # Validate email
         if not validate_email(email):
             messages.error(request, 'Email is invalid. Please enter a valid email.')
             return render(request, 'authentication/register.html', context)
         if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists. Use another email.')
-            return render(request, 'authentication/register.html', context)
+            user = User.objects.get(email = email)
+            if user.is_active:
+                messages.error(request, 'Email already exists. Please log in instead.')
+                return redirect('login')
+            else:
+                messages.error(request, "Account exists but is inactive. Please activate the account first.")
+                request.session['email'] = email
+                return redirect('confirm-email')
 
         # Validate password
         if password != confirm_password:
@@ -171,16 +184,57 @@ class Register(View):
             email_subject = "Activate your account"
             email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
 
-            email = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
-            EmailThread(email).start()
+            email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
+            EmailThread(email_message).start()
 
             messages.success(request, "Your account was created successfully. Please check your email to activate your account.")
-            return redirect('login')
+            return redirect('confirm_email', email=email)
 
         except Exception as e:
             user.delete()
             messages.error(request, f'An error occurred while creating your account. Please try again. {str(e)}')
             return render(request, 'authentication/register.html', context)
+
+class ResendEmail(View):
+    def get(self, request):
+        email = request.session.get('email', None)
+        return render(request, 'authentication/confirm_email.html', {"email": email})
+    
+    def post(self, request):
+        email = request.POST.get('email').strip()
+
+        if not email:
+            messages.error(request, "Email field is empty")
+            return redirect('confirm-email')
+        
+        try:
+
+            user = User.objects.get(email=email)
+
+            if user.is_active:
+                messages.info(request, "This user account is already active. Please log in instead.")
+            
+            # generate a new activation link.
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = token_generator.make_token(user)
+            domain = get_current_site(request).domain
+            link = reverse('activate_account', kwargs={
+                'uidb64': uidb64,
+                'token': token
+            })
+            activate_url = f'http://{domain}{link}'
+
+            email_subject = "New activation link"
+            email_body = f'Hello {user.username},\n\n Click the link below to activate your account.\n\n {activate_url}'
+            email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
+            EmailThread(email_message).start()
+
+            messages.success(request, f"A new activation link has been sent to {email}.")
+            return redirect('confirm-email')
+        except Exception as e:
+            messages.error(request, f"There was an error sending your new activation link. {e}")
+            return redirect('confirm-email')
+
 
 
 class ActivateAccount(View):

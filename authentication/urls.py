@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', Login.as_view(), name='login'),
+    path('login', Login.as_view(), name='login'),
     path('register', Register.as_view(), name = 'register'),
     path('activate_account/<uidb64>/<token>', ActivateAccount.as_view(), name = 'activate_account'),
     path('validate_name', csrf_exempt(ValidateName.as_view()), name = 'validate-name'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('logout', Logout.as_view(), name = 'logout'),
     path('reset_password', ResetPassword.as_view(), name = 'reset-password'),
     path('set_new_password/<uidb64>/<token>', SetNewPassword.as_view(), name = 'set-new-password'),
+    path('confirm_email', ResendEmail.as_view(),  name='confirm-email')
     
 ] + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

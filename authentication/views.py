@@ -3,11 +3,12 @@ from django.views import View
 from django.contrib import messages
 import json
 from django.http import JsonResponse
-from validate_email import validate_email
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from .models import UserProfile, Roles, Doctor
 from django.contrib.auth import authenticate, login, logout
-from django.utils.encoding import force_bytes, force_str,   DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import token_generator
@@ -17,6 +18,9 @@ from django.core.mail import EmailMessage
 import threading
 from django.contrib.auth.models import Group
 
+validate_email = EmailValidator()
+
+
 def send_activation_email(request, user, email):
     try:
         # Send activation email
@@ -24,7 +28,7 @@ def send_activation_email(request, user, email):
         token = token_generator.make_token(user)
         domain = get_current_site(request).domain
         link = reverse('activate_account', kwargs={'uidb64': uidb64, 'token': token})
-        activate_url = f"http://{domain}{link}"
+        activate_url = f"{request.scheme}://{domain}{link}"
         email_subject = "Activate your account"
         email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
 
@@ -78,50 +82,31 @@ class Login(View):
             messages.success(request, f'Welcome back, {user.first_name.title()}')
             return redirect('home')
         except Exception as e:
-            messages.error(request, 'An error occurred while logging in. Please try again, ', e)
+            messages.error(request, f'An error occurred while logging in. Please try again {e}')
             return render(request, 'authentication/login.html', context)
     
 class Register(View):
-    def get(self, request):
-        roles = Roles.objects.all()
-        return render(request, 'authentication/register.html', {'roles': roles})
+    def validate_data(self, request, data):
+        context = self.get_context(data)
 
-    def post(self, request):
-        # Get form data
-        username = request.POST.get('username').strip()
-        password = request.POST.get('password').strip()
-        confirm_password = request.POST.get('confirm_password').strip()
-        email = request.POST.get('email').strip()
-        first_name = request.POST.get('first_name').strip()
-        last_name = request.POST.get('last_name').strip()
-        role_id = request.POST.get('role').strip()
-
-        # Collect all form field values in context
-        roles = Roles.objects.all()
-        context = {
-            'field_values': request.POST,
-            'roles': roles,
-        }
-
-        # Basic field validation
-        if not all([first_name, last_name, username, email, password, confirm_password, role_id]):
-            messages.error(request, 'All fields are required. Please cross-check and provide the required information.')
+        if not all([data['first_name'], data['last_name'], data['role'], data['username'], data['password'], data['confirm_password'], data['email']]):
+            messages.error(request, "All fields are required.")
             return render(request, 'authentication/register.html', context)
-
+        
         # Validate name fields
-        if not first_name.isalpha():
+        if not data["first_name"].isalpha():
             messages.error(request, 'First name must contain letters only.')
             return render(request, 'authentication/register.html', context)
-        if not last_name.isalpha():
+        if not data["last_name"].isalpha():
             messages.error(request, 'Last name must contain letters only.')
             return render(request, 'authentication/register.html', context)
 
         # Validate username
-        if not username.isalnum():
+        if not data["username"].isalnum():
             messages.error(request, 'Username must contain letters and numbers only.')
             return render(request, 'authentication/register.html', context)
-        if User.objects.filter(username=username).exists():
-            user = User.objects.get(username=username)
+        if User.objects.filter(username=data["username"]).exists():
+            user = User.objects.get(username=data["username"])
             
             if user.is_active:
                 messages.error(request, 'Email already exists. Please log in instead.')
@@ -132,20 +117,25 @@ class Register(View):
                 return redirect('confirm-email')
 
         # Validate email
-        if not validate_email(email):
-            messages.error(request, 'Email is invalid. Please enter a valid email.')
+        try:
+            validate_email(data['email'])
+        except ValidationError:
+            messages.error(request, "'Email is invalid. Please enter a valid email.")
             return render(request, 'authentication/register.html', context)
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email = email)
+        if User.objects.filter(email=data["email"]).exists():
+            user = User.objects.get(email = data["email"])
             if user.is_active:
                 messages.error(request, 'Email already exists. Please log in instead.')
                 return redirect('login')
             else:
                 messages.error(request, "Account exists but is inactive. Please activate the account first.")
-                request.session['email'] = email
+                request.session['email'] = data["email"]
                 return redirect('confirm-email')
+        
+        password = data['password'].strip()
+        confirm_password = data['confirm_password']
 
-        # Validate password
+         # Validate password
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return render(request, 'authentication/register.html', context)
@@ -153,17 +143,18 @@ class Register(View):
             messages.error(request, 'Password too short. Please use at least 6 characters.')
             return render(request, 'authentication/register.html', context)
 
+         
         # Get the role object and validate
         try:
-            role = Roles.objects.get(id=role_id)
+            role = Roles.objects.get(id=data['role'])
         except Roles.DoesNotExist:
             messages.error(request, 'Invalid role selected. Please select a valid role.')
             return render(request, 'authentication/register.html', context)
 
         # Validate additional fields for Doctor role
         if role.name == "Doctor":
-            specialty = request.POST.get('specialty')
-            license_number = request.POST.get('license_number')
+            specialty = data.get('specialty')
+            license_number = data.get('license_number')
 
             if not specialty:
                 messages.error(request, "Specialty field is required for doctors.")
@@ -171,6 +162,48 @@ class Register(View):
             if not license_number:
                 messages.error(request, "License number field is required for doctors.")
                 return render(request, 'authentication/register.html', context)
+
+
+        return True
+    
+    def get_context(self, data):
+        roles = Roles.objects.all()
+
+        context = {
+            "roles": roles,
+            "field_values": data
+        }
+
+        return context
+
+    def get(self, request):
+        roles = Roles.objects.all()
+        return render(request, 'authentication/register.html', {'roles': roles})
+        
+    def post(self, request):
+        # get the form data
+        data = request.POST
+
+        username = data.get("username", "").strip()
+        password = data.get('password', "").strip()
+        email = data.get('email', "").strip()
+        first_name = data.get('first_name', "").strip()
+        last_name = data.get('last_name', "").strip()
+        role_id = data.get('role', "").strip()
+
+        validation_message = self.validate_data(request, data)
+        
+        if validation_message is not True:
+            return validation_message
+
+        context = self.get_context(data)
+        
+        # Get the role object and validate
+        try:
+            role = Roles.objects.get(id=role_id)
+        except Roles.DoesNotExist:
+            messages.error(request, 'Invalid role selected. Please select a valid role.')
+            return render(request, 'authentication/register.html', context)
 
         # Create user and user profile
         try:
@@ -181,7 +214,7 @@ class Register(View):
             user.is_active = False  # Deactivate user account until activation
             user.save()
 
-            if role_id == 1:
+            if role.name == "Admin":
                 user.is_staff = True
                 user.save() # make the user a staff user if the  role is admin.
 
@@ -190,7 +223,7 @@ class Register(View):
 
             # Create doctor if the role is Doctor
             if role.name == "Doctor":
-                Doctor.objects.create(user_profile=user_profile, specialty=specialty, license_number=license_number)
+                Doctor.objects.create(user_profile=user_profile, specialty=data["specialty"], license_number=data["license_number"])
                 # add the use to doctors group
                 group = Group.objects.get(name = "doctors")
                 user.groups.add(group)
@@ -207,7 +240,7 @@ class Register(View):
 
 class ResendEmail(View):
     def get(self, request):
-        email = request.session.get('email', None)
+        email = request.session.get('email', "undefined")
         return render(request, 'authentication/confirm_email.html', {"email": email})
     
     def post(self, request):
@@ -218,10 +251,6 @@ class ResendEmail(View):
             messages.error(request, "Email field is empty")
             return redirect('confirm-email')
         
-        if not user:
-            messages.error(request, "User with that email does not exist.")
-            return redirect('register')
-         
         try:
             if send_activation_email(request, user, email):
                 messages.success(request, f"A new link was sent to {email}")
@@ -284,15 +313,21 @@ class ValidateUsername(View):
 
 class ValidateEmail(View):
     def post(self, request):
-        data = json.loads(request.body)
-        email = data['email'].strip()
-        
-        if User.objects.filter(email = email).exists():
-            return JsonResponse({'email_error': 'Email already exists. Use another email.'}, status=400)
-        if not validate_email(email):
+        try:
+            data = json.loads(request.body)
+            email = data.get("email", "").strip()
+
+            if User.objects.filter(email = email).exists():
+                return JsonResponse({'email_error': 'Email already exists. Use another email.'}, status=400)
+          
+            validate_email(email)
+            return  JsonResponse({'email_valid': True})
+        except ValidationError:
             return JsonResponse({'email_error': 'Email is invalid. Please enter a valid email.'}, status=409)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"email_error": "Error decoding email into json."}, status = 400)
         
-        return JsonResponse({'email_valid': True})
+       
 
 class Logout(View):
     def post(self, request):
@@ -312,27 +347,23 @@ class ResetPassword(View):
         try:
             email = request.POST['email']
 
-            if not validate_email(email):
+            try:
+                validate_email(email)
+            except ValidationError:
                 messages.error(request, "Invalid Email. Please enter a valid email.")
                 return redirect('reset-password')
             
-            if not User.objects.filter(email = email).exists():
+            user = User.objects.filter(email=email).first()
+            if not user:
                 messages.error(request, 'A user with the email provided does not exist. Please check and try again.')
                 return redirect('reset-password')
-            
-            user = User.objects.filter(email = email)
-            if not user.exists():
-                messages.error(request, 'An error occurred while processing your request. Please try again.')
-                return redirect('reset-password')
-            
-            user = user[0]
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = PasswordResetTokenGenerator().make_token(user)
             domain = get_current_site(request).domain
             link = reverse('set-new-password', kwargs={'uidb64': uidb64, 'token': token})
 
-            reset_url = f"http://{domain}{link}"
+            reset_url = f"{request.scheme}://{domain}{link}"
             email_subject = "Password Reset"
             email_body = f'Hello, {user.username}, \n\nTo reset your password, click on the link below.\n\n{reset_url}'
 
@@ -348,7 +379,7 @@ class ResetPassword(View):
             messages.success(request, 'Password reset link has been sent to your email. Please check your email to reset your password.')
             return redirect('reset-password')
         except Exception as e:
-            messages.error(request, 'An error occurred while sending the email. Please try again.')
+            messages.error(request, f'An error occurred while sending the email. Please try again. {e}')
             return render(request, 'authentication/reset_password.html')
         
 class SetNewPassword(View):

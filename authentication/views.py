@@ -84,9 +84,12 @@ class Login(View):
         except Exception as e:
             messages.error(request, f'An error occurred while logging in. Please try again {e}')
             return render(request, 'authentication/login.html', context)
-    
+
+# CLASS TO REGISTER THE USER.    
 class Register(View):
+    # validate the data.
     def validate_data(self, request, data):
+        """Validates user data."""
         context = self.get_context(data)
 
         if not all([data['first_name'], data['last_name'], data['role'], data['username'], data['password'], data['confirm_password'], data['email']]):
@@ -166,7 +169,9 @@ class Register(View):
 
         return True
     
+    # get context for rendering pages to the frontend.
     def get_context(self, data):
+        """Gets the context for rendering html pages."""
         roles = Roles.objects.all()
 
         context = {
@@ -175,12 +180,14 @@ class Register(View):
         }
 
         return context
-
+    
     def get(self, request):
+        """Renders page to the front end when get method is used."""
         roles = Roles.objects.all()
         return render(request, 'authentication/register.html', {'roles': roles})
         
     def post(self, request):
+        """Registers the user when user's data is submitted from a form."""
         # get the form data
         data = request.POST
 
@@ -239,6 +246,7 @@ class Register(View):
             return render(request, 'authentication/register.html', context)
 
 class ResendEmail(View):
+    """Resends activation email."""
     def get(self, request):
         email = request.session.get('email', "undefined")
         return render(request, 'authentication/confirm_email.html', {"email": email})
@@ -263,6 +271,7 @@ class ResendEmail(View):
 
 
 class ActivateAccount(View):
+    """Uses the credential encoded in a link to activate the user's account."""
     def get(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -286,6 +295,7 @@ class ActivateAccount(View):
             return redirect('register')
         
 class ValidateName(View):
+    """Ensure the name is alphanumeric with no special characters."""
     def post(self, request):
         data = json.loads(request.body)
         name = data['name'].strip()
@@ -299,6 +309,7 @@ class ValidateName(View):
         
 
 class ValidateUsername(View):
+    """Ensure username is unique and in the correct format. Accessible in real time as user keys in the username in registration form."""
     def post(self, request):
         data = json.loads(request.body)
         username = data['username'].strip()
@@ -312,6 +323,7 @@ class ValidateUsername(View):
         return JsonResponse({'username_valid': True})
 
 class ValidateEmail(View):
+    """Ensures the email is unique and valid. Used in real time as user key's in the email."""
     def post(self, request):
         try:
             data = json.loads(request.body)
@@ -330,6 +342,7 @@ class ValidateEmail(View):
        
 
 class Logout(View):
+    """Log out the user."""
     def post(self, request):
         try:
             logout(request)
@@ -340,6 +353,7 @@ class Logout(View):
             return redirect('home')
 
 class ResetPassword(View):
+    """Send a password reset link to the user."""
     def get(self, request):
         return render(request, 'authentication/reset_password.html')
     
@@ -383,6 +397,7 @@ class ResetPassword(View):
             return render(request, 'authentication/reset_password.html')
         
 class SetNewPassword(View):
+    """Allows a user to change their password."""
     def get(self, request, uidb64, token):
         context = {
             'uidb64': uidb64,

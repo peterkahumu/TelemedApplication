@@ -17,6 +17,26 @@ from django.core.mail import EmailMessage
 import threading
 from django.contrib.auth.models import Group
 
+def send_activation_email(request, user, email):
+    try:
+        # Send activation email
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = token_generator.make_token(user)
+        domain = get_current_site(request).domain
+        link = reverse('activate_account', kwargs={'uidb64': uidb64, 'token': token})
+        activate_url = f"http://{domain}{link}"
+        email_subject = "Activate your account"
+        email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
+
+        email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
+        EmailThread(email_message).start()
+
+        return True
+    except Exception as e:
+        messages.error(request, "An error occured sending the email")
+        return False
+
+    
 # Create your views here.
 class Login(View):
     def get(self, request):
@@ -175,21 +195,11 @@ class Register(View):
                 group = Group.objects.get(name = "doctors")
                 user.groups.add(group)
 
-            # Send activation email
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = token_generator.make_token(user)
-            domain = get_current_site(request).domain
-            link = reverse('activate_account', kwargs={'uidb64': uidb64, 'token': token})
-            activate_url = f"http://{domain}{link}"
-            email_subject = "Activate your account"
-            email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
-
-            email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
-            EmailThread(email_message).start()
-
-            messages.success(request, "Your account was created successfully. Please check your email to activate your account.")
-            return redirect('confirm_email', email=email)
-
+            # send the activation email to the user.
+            if send_activation_email(request, user, email):
+                request.session['email'] = email
+                messages.success(request, "Your account was created successfully. Please check your email to activate your account.")
+            return redirect('confirm-email')
         except Exception as e:
             user.delete()
             messages.error(request, f'An error occurred while creating your account. Please try again. {str(e)}')
@@ -202,35 +212,21 @@ class ResendEmail(View):
     
     def post(self, request):
         email = request.POST.get('email').strip()
+        user = User.objects.get(email=email)
 
         if not email:
             messages.error(request, "Email field is empty")
             return redirect('confirm-email')
         
+        if not user:
+            messages.error(request, "User with that email does not exist.")
+            return redirect('register')
+         
         try:
-
-            user = User.objects.get(email=email)
-
-            if user.is_active:
-                messages.info(request, "This user account is already active. Please log in instead.")
-            
-            # generate a new activation link.
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = token_generator.make_token(user)
-            domain = get_current_site(request).domain
-            link = reverse('activate_account', kwargs={
-                'uidb64': uidb64,
-                'token': token
-            })
-            activate_url = f'http://{domain}{link}'
-
-            email_subject = "New activation link"
-            email_body = f'Hello {user.username},\n\n Click the link below to activate your account.\n\n {activate_url}'
-            email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
-            EmailThread(email_message).start()
-
-            messages.success(request, f"A new activation link has been sent to {email}.")
+            if send_activation_email(request, user, email):
+                messages.success(request, f"A new link was sent to {email}")
             return redirect('confirm-email')
+            
         except Exception as e:
             messages.error(request, f"There was an error sending your new activation link. {e}")
             return redirect('confirm-email')

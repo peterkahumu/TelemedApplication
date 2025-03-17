@@ -21,7 +21,7 @@ from django.contrib.auth.models import Group
 validate_email = EmailValidator()
 
 
-def send_activation_email(request, user, email):
+def send_activation_email(request, user, email, resend=False):
     try:
         # Send activation email
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
@@ -29,7 +29,10 @@ def send_activation_email(request, user, email):
         domain = get_current_site(request).domain
         link = reverse('activate_account', kwargs={'uidb64': uidb64, 'token': token})
         activate_url = f"{request.scheme}://{domain}{link}"
-        email_subject = "Activate your account"
+        if resend:
+            email_subject = "New activation link." # include in the email subject if it is a new email while resending.
+        else:
+            email_subject = "Activate your account"
         email_body = f'Hello, {user.username},\n\nTo activate your account, click on the link below:\n\n{activate_url}'
 
         email_message = EmailMessage(email_subject, email_body, 'noreply@semycolon.com', [email])
@@ -260,7 +263,7 @@ class ResendEmail(View):
             return redirect('confirm-email')
         
         try:
-            if send_activation_email(request, user, email):
+            if send_activation_email(request, user, email, resend=True):
                 messages.success(request, f"A new link was sent to {email}")
             return redirect('confirm-email')
             

@@ -29,6 +29,6 @@ urlpatterns = [
 
 # Custom 404 error page
 def custom_404(request, exception):
-    return render('request', '404_error.html', status = 404)
+    return render(request, '404_error.html', status = 404)
 
 handler404 = 'Telemed.urls.custom_404'
